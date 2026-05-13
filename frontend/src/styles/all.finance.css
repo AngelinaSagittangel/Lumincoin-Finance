@@ -1,0 +1,56 @@
+@media screen and (max-width: 990px) {
+  .container {
+    margin: 0 auto !important;
+    text-align: center;
+  }
+}
+
+
+.button-select::after {
+  content: none;
+}
+
+.link-active {
+    color: white;
+}
+
+.button-tabs {
+  width: 100px;
+}
+
+@media screen and (max-width: 990px) {
+  .tabs {
+    justify-content: center;
+  }
+
+  .button-tabs {
+    width: 100%;
+  }
+}
+
+.modal-finance {
+    background-color: #353535cf;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-footer {
+    border: none;
+}
+
+.wrapper-btn {
+  display: flex;
+  gap: 16px;
+}
+
+@media screen and (max-width: 990px) {
+  .wrapper-btn {
+    flex-direction: column;
+  }
+
+  .wrapper-btn button{
+    width: 100%;
+  }
+}

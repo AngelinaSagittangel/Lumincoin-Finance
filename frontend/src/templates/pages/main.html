@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.json"
+    />
+    <link rel="stylesheet" href="../../styles/layout.css" />
+
+    <link rel="stylesheet" href="../../styles/main.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="../../static/img/logo.png" alt="logo" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="main.html"
+                >Главная</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="all-finance.html">Доходы & Расходы</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Категории
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a
+                    class="dropdown-item selecet-li-item"
+                    href="../pages/finance.html"
+                    >Доходы</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item selecet-li-item"
+                    href="../pages/expenses.html"
+                    >Расходы</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container d-flex ms-0 ps-0 m-0">
+      <main class="main-block d-flex flex-nowrap">
+        <div class="d-flex flex-column flex-shrink-0 p-3 layout-container">
+          <a
+            href="main.html"
+            class="d-flex align-items-center justify-content-center mb-3 mb-md-0 text-decoration-none mt-3"
+          >
+            <picture>
+              <img src="../../static/img/logo.png" alt="logo" />
+            </picture>
+          </a>
+          <hr />
+          <ul class="nav nav-pills flex-column mb-auto mt-4">
+            <li class="nav-item">
+              <a href="main.html" class="nav-link active" aria-current="page">
+                <i class="bi bi-house-door me-1"></i>
+                Главная
+              </a>
+            </li>
+            <li>
+              <a
+                href="all-finance.html"
+                class="text-primary-emphasis nav-link link-active"
+              >
+                <i class="bi bi-cash-coin me-1"></i>
+                Доходы & Расходы
+              </a>
+            </li>
+            <li>
+              <div class="dropdown">
+                <button
+                  class="w-100 btn dropdown-toggle d-flex align-items-center justify-content-between button-select"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Категории
+                  <i class="bi bi-chevron-right"></i>
+                </button>
+                <ul class="dropdown-menu w-100 border border-primary p-0">
+                  <li>
+                    <a
+                      class="dropdown-item selecet-li-item"
+                      href="../pages/finance.html"
+                      >Доходы</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item selecet-li-item"
+                      href="../pages/expenses.html"
+                      >Расходы</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="nav-link link-dark text-primary-emphasis">
+            Баланс: <span class="ms-2 text-primary">500$</span>
+          </a>
+          <hr />
+          <div class="dropdown">
+            <a
+              href="#"
+              class="d-flex align-items-center link-dark text-decoration-none text-primary-emphasis"
+            >
+              <img
+                src="https://github.com/mdo.png"
+                alt=""
+                width="32"
+                height="32"
+                class="rounded-circle me-2"
+              />
+              <span class="ms-2">Роман Чернов</span>
+            </a>
+          </div>
+        </div>
+      </main>
+      <div class="content d-flex gap-5 p-2 p-lg-5 w-100">
+        <h1 class="text-primary-emphasis">Главная</h1>
+        <div class="tabs d-flex align-items-center gap-4 flex-wrap">
+          <button type="button" class="btn btn-secondary button-tabs">
+            Сегодня
+          </button>
+          <button type="button" class="btn btn-outline-secondary button-tabs">
+            Неделя
+          </button>
+          <button type="button" class="btn btn-outline-secondary button-tabs">
+            Месяц
+          </button>
+          <button type="button" class="btn btn-outline-secondary button-tabs">
+            Год
+          </button>
+          <button type="button" class="btn btn-outline-secondary button-tabs">
+            Все
+          </button>
+          <button type="button" class="btn btn-outline-secondary button-tabs">
+            Интервал
+          </button>
+          <div>с</div>
+          <a
+            href="#"
+            class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
+            >Дата</a
+          >
+          <div>по</div>
+          <a
+            href="#"
+            class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
+            >Дата</a
+          >
+        </div>
+        <div class="canvas-wrapper w-100 gap-4">
+          <div class="canvas-container w-100">
+            <h2 class="title-canvas">Доходы</h2>
+            <canvas id="myChart"></canvas>
+          </div>
+          <div class="hr-element"></div>
+          <div class="canvas-container w-100">
+            <h2 class="title-canvas">Расходы</h2>
+            <canvas id="myChart2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="../../js/main.js"></script>
+  </body>
+</html>

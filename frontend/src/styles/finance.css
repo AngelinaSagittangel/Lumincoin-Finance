@@ -1,0 +1,56 @@
+@media screen and (max-width: 990px) {
+  .container {
+    margin: 0 auto !important;
+    text-align: center;
+  }
+}
+
+
+
+.card-add {
+  height: stretch;
+}
+
+.card-body {
+  min-height: 119px;
+}
+
+.bi-plus-lg::before {
+  color: #ced4da;
+}
+
+.card-title-item {
+  color: #290661;
+}
+
+.modal-title {
+  color: #290661;
+}
+
+.modal-header {
+  border: none;
+}
+
+.modal-footer {
+  border: none;
+}
+
+.modal-finance {
+  background-color: #353535cf;
+}
+
+.wrapper-btn {
+  display: flex;
+  gap: 16px;
+}
+
+@media screen and (max-width: 990px) {
+  .wrapper-btn {
+    flex-direction: column;
+  }
+
+  .wrapper-btn button{
+    width: 100%;
+  }
+}
+

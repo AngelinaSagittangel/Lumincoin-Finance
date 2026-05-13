@@ -1,0 +1,35 @@
+@media screen and (max-width: 990px) {
+  .container {
+    margin: 0 auto !important;
+    text-align: center;
+  }
+}
+
+
+.card-add {
+    height: stretch;
+    min-height: 111px;
+}
+
+.modal-finance {
+    background-color: #353535cf;
+}
+
+.bi-plus-lg::before {
+  color: #ced4da;
+}
+
+.wrapper-btn {
+  display: flex;
+  gap: 16px;
+}
+
+@media screen and (max-width: 990px) {
+  .wrapper-btn {
+    flex-direction: column;
+  }
+
+  .wrapper-btn button{
+    width: 100%;
+  }
+}
