@@ -1,23 +1,33 @@
-const deleteButtons = document.querySelectorAll(".delete-category");
-deleteButtons.forEach((button) => {
-  button.addEventListener("click", openModal);
-});
+export class AllFinance {
+  constructor(openNewRoute) {
+    this.openNewRoute = openNewRoute;
 
-const formModal = document.querySelector(".modal-finance");
+    if (!localStorage.getItem("accessToken")) {
+      return this.openNewRoute("/login");
+    }
 
-function openModal() {
-  formModal.classList.toggle("show");
-  formModal.style.display = "block";
-}
+    const deleteButtons = document.querySelectorAll(".delete-category");
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", openModal);
+    });
 
-const modalFooter = document.querySelector(".modal-footer");
-const footerButtons = modalFooter.querySelectorAll("button");
+    const formModal = document.querySelector(".modal-finance");
 
-footerButtons.forEach((button) => {
-  button.addEventListener("click", closeModal);
-});
+    function openModal() {
+      formModal.classList.toggle("show");
+      formModal.style.display = "block";
+    }
 
-function closeModal() {
-  formModal.classList.toggle("show");
-  formModal.style.display = "none";
+    const modalFooter = document.querySelector(".modal-footer");
+    const footerButtons = modalFooter.querySelectorAll("button");
+
+    footerButtons.forEach((button) => {
+      button.addEventListener("click", closeModal);
+    });
+
+    function closeModal() {
+      formModal.classList.toggle("show");
+      formModal.style.display = "none";
+    }
+  }
 }

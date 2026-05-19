@@ -1,7 +1,17 @@
+import { Chart } from "chart.js/auto";
+
 export class Main {
-  constructor() {
+  constructor(openNewRoute) {
+    this.openNewRoute = openNewRoute;
+
+    if (!localStorage.getItem("accessToken")) {
+      return this.openNewRoute("/login");
+    }
+
     const ctx = document.getElementById("myChart").getContext("2d");
     const ctx2 = document.getElementById("myChart2").getContext("2d");
+
+    const navAllFinanceBtn = document.getElementById("nav-all-finance-btn");
 
     new Chart(ctx, {
       type: "pie",

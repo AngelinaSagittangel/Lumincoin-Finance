@@ -1,0 +1,66 @@
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card-body">
+        <div class="text-center mb-5">
+          <a href="/" class="text-decoration-none">
+            <img src="../../static/img/logo_auth.png" alt="logo" />
+          </a>
+        </div>
+
+        <h1 class="text-primary-emphasis text-center">Вход</h1>
+
+        <div id="common-error" class="invalid-feedback mb-3 text-center">Неправильный email или пароль</div>
+        <form class="mt-3" id="auth-form">
+          <div class="input-group mb-2 w-100">
+            <span class="input-group-text" id="basic-addon1"
+              ><i class="bi bi-envelope-open"></i
+            ></span>
+
+            <input
+              id="input-email"
+              type="text"
+              class="form-control rounded-end"
+              placeholder="Электронная почта"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+            <div class="invalid-feedback">Почта не найдена</div>
+          </div>
+
+          <div class="input-group mb-2 w-100">
+            <span class="input-group-text" id="password-input"
+              ><i class="bi bi-lock"></i
+            ></span>
+            <input
+              id="input-password"
+              type="password"
+              class="form-control rounded-end"
+              placeholder="Пароль"
+              aria-label="Username"
+              aria-describedby="password-input"
+            />
+            <div class="invalid-feedback">Неверный пароль</div>
+          </div>
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe"
+              >Запомнить меня</label
+            >
+          </div>
+
+          <button id="auth-button" type="button" class="btn btn-primary w-100">
+            Войти
+          </button>
+        </form>
+
+        <div class="mt-3">
+          <small
+            >Ещё нет аккаунта? <a href="/signup">Пройдите регистрацию</a></small
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
