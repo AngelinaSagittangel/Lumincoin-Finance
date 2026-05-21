@@ -1,10 +1,17 @@
-import { AllFinance } from "./js/all-finance.js";
-import { Expenses } from "./js/expenses.js";
-import { Finance } from "./js/finance.js";
-import { Auth, Login } from "./js/login.js";
-import { Logout } from "./js/logout.js";
+import { AllFinanceCreate } from "./js/all-finance/all-finance-create.js";
+import { AllFinanceUpdate } from "./js/all-finance/all-finance-update.js";
+import { AllFinance } from "./js/all-finance/all-finance.js";
+import { ExpensesCreate } from "./js/expenses/expenses-create.js";
+import { ExpensesUpdate } from "./js/expenses/expenses-update.js";
+import { Expenses } from "./js/expenses/expenses.js";
+import { FinanceCreate } from "./js/finance/finance-create.js";
+import { FinanceUpdate } from "./js/finance/finance-update.js";
+import { Finance } from "./js/finance/finance.js";
+import { Auth, Login } from "./js/auth/login.js";
+import { Logout } from "./js/auth/logout.js";
 import { Main } from "./js/main.js";
-import { Registr, SignUp } from "./js/sign-up.js";
+import { Registr, SignUp } from "./js/auth/sign-up.js";
+import { ModalLogout } from "./js/auth/modal-logout.js";
 
 export class Router {
   constructor() {
@@ -39,6 +46,7 @@ export class Router {
       },
       {
         route: "/logout",
+        useLayout: "/templates/layout.html",
         load: () => {
           new Logout(this.openNewRoute.bind(this));
         },
@@ -58,7 +66,7 @@ export class Router {
         filePathTemplates: "/templates/pages/create-all-finance.html",
         useLayout: "/templates/layout.html",
         load: () => {
-          
+          new AllFinanceCreate(this.openNewRoute.bind(this));
         },
       },
       {
@@ -67,7 +75,7 @@ export class Router {
         filePathTemplates: "/templates/pages/update-all-finance.html",
         useLayout: "/templates/layout.html",
         load: () => {
-          
+          new AllFinanceUpdate(this.openNewRoute.bind(this));
         },
       },
       {
@@ -79,20 +87,22 @@ export class Router {
           new Finance(this.openNewRoute.bind(this));
         },
       },
-            {
+      {
         route: "/finance-create",
         title: "Создание дохода",
         filePathTemplates: "/templates/pages/create-category.html",
         useLayout: "/templates/layout.html",
         load: () => {
+          new FinanceCreate(this.openNewRoute.bind(this));
         },
       },
-            {
+      {
         route: "/finance-udpate",
         title: "Редактирование дохода",
         filePathTemplates: "/templates/pages/update-category.html",
         useLayout: "/templates/layout.html",
         load: () => {
+          new FinanceUpdate(this.openNewRoute.bind(this));
         },
       },
       {
@@ -110,6 +120,7 @@ export class Router {
         filePathTemplates: "/templates/pages/expenses-create.html",
         useLayout: "/templates/layout.html",
         load: () => {
+          new ExpensesCreate(this.openNewRoute.bind(this));
         },
       },
       {
@@ -118,9 +129,9 @@ export class Router {
         filePathTemplates: "/templates/pages/expenses-update.html",
         useLayout: "/templates/layout.html",
         load: () => {
+          new ExpensesUpdate(this.openNewRoute.bind(this));
         },
       },
-
     ];
   }
 
@@ -143,6 +154,13 @@ export class Router {
       element = e.target;
     } else if (e.target.parentNode.nodeName === "A") {
       element = e.target.parentNode;
+    }
+
+    if (
+      e.target.id === "logout-icon" ||
+      (e.target.parentNode && e.target.parentNode.id === "logout-icon")
+    ) {
+      return;
     }
 
     if (element) {
@@ -193,6 +211,8 @@ export class Router {
             newRoute.useLayout,
           ).then((response) => response.text());
           contentBlock = document.getElementById("content-layout");
+
+          ModalLogout.init();
         }
         contentBlock.innerHTML = await fetch(newRoute.filePathTemplates).then(
           (response) => response.text(),

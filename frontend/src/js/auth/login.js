@@ -1,8 +1,11 @@
+import { AuthUtils } from "../../utils/auth-utils.js";
+import { HttpUtils } from "../../utils/http-utils.js";
+
 export class Login {
   constructor(openNewRoute) {
     this.openNewRoute = openNewRoute;
 
-    if (localStorage.getItem("accessToken")) {
+    if (AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
       return this.openNewRoute("/");
     }
 
@@ -49,46 +52,37 @@ export class Login {
   async login() {
     this.commonError.style.display = "none";
     if (this.validateForm()) {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          email: this.inputEmail.value,
-          password: this.inputPassword.value,
-          rememberMe: this.rememberMe.checked,
-        }),
+      const result = await HttpUtils.request("/login", "POST", {
+        email: this.inputEmail.value,
+        password: this.inputPassword.value,
+        rememberMe: this.rememberMe.checked,
       });
-
-      const result = await response.json();
 
       if (
         result.error ||
-        !result.tokens.accessToken ||
-        !result.tokens.refreshToken ||
-        !result.user.name ||
-        !result.user.lastName ||
-        !result.user.id
+        !result.response ||
+        (result.response &&
+          (!result.response.tokens.accessToken ||
+            !result.response.tokens.refreshToken ||
+            !result.response.user.name ||
+            !result.response.user.lastName ||
+            !result.response.user.id))
       ) {
         this.commonError.style.display = "block";
         return;
       }
 
-      localStorage.setItem("accessToken", result.tokens.accessToken);
-      localStorage.setItem("refreshToken", result.tokens.refreshToken);
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({
-          name: result.user.name,
-          lastName: result.user.lastName,
-          id: result.user.id,
-        }),
+      AuthUtils.setAuthInfo(
+        result.response.tokens.accessToken,
+        result.response.tokens.refreshToken,
+        {
+          name: result.response.user.name,
+          lastName: result.response.user.lastName,
+          id: result.response.user.id,
+        },
       );
 
       this.openNewRoute("/");
-      console.log(result);
     }
   }
 }

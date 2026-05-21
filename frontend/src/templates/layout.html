@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
@@ -94,16 +93,12 @@
             </button>
             <ul class="dropdown-menu w-100 border border-primary p-0">
               <li>
-                <a
-                  class="dropdown-item selecet-li-item"
-                  href="/finance"
+                <a class="dropdown-item selecet-li-item" href="/finance"
                   >Доходы</a
                 >
               </li>
               <li>
-                <a
-                  class="dropdown-item selecet-li-item"
-                  href="/expenses"
+                <a class="dropdown-item selecet-li-item" href="/expenses"
                   >Расходы</a
                 >
               </li>
@@ -123,7 +118,7 @@
           <i class="bi bi-person-circle"></i>
           <span class="ms-2">Роман Чернов</span>
         </a>
-        <a href="/logout">
+        <a href="#" id="logout-icon">
           <i class="bi bi-box-arrow-in-right"></i>
         </a>
       </div>
@@ -133,4 +128,39 @@
     id="content-layout"
     class="content d-flex justify-content-start gap-5 p-2 p-lg-5 w-100"
   ></div>
+</div>
+
+<div
+  class="modal fade modal-finance modal-logout"
+  id="exampleModalCenter"
+  tabindex="-1"
+  aria-labelledby="exampleModalCenterTitle"
+  style="display: none"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+      <div class="modal-header mx-auto">
+        <h1
+          class="modal-title fs-5 text-center modal-title"
+          id="exampleModalCenterTitle"
+        >
+          Вы действительно хотите выйти?
+        </h1>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          id="btnTrueExit"
+        >
+          <a href="/logout" class="text-decoration-none text-white">Да, выйти</a>
+        </button>
+        <button type="button" class="btn btn-danger" id="btnFalseExit">
+          Не выходить
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

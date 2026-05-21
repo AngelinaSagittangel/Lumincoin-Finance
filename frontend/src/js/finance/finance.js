@@ -1,8 +1,10 @@
-export class Expenses {
+import { AuthUtils } from "../../utils/auth-utils.js";
+
+export class Finance {
   constructor(openNewRoute) {
     this.openNewRoute = openNewRoute;
 
-    if (!localStorage.getItem("accessToken")) {
+    if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
       return this.openNewRoute("/login");
     }
     const deleteButtons = document.querySelectorAll(".delete-category");
