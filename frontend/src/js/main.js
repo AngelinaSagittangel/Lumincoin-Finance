@@ -1,5 +1,6 @@
 import { Chart } from "chart.js/auto";
 import { AuthUtils } from "../utils/auth-utils.js";
+import { ModalLogout } from "./auth/modal-logout.js";
 
 export class Main {
   constructor(openNewRoute) {
@@ -8,7 +9,12 @@ export class Main {
     if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
       return this.openNewRoute("/login");
     }
+    ModalLogout.init();
 
+    this.showChart();
+  }
+
+  showChart() {
     const ctx = document.getElementById("myChart").getContext("2d");
     const ctx2 = document.getElementById("myChart2").getContext("2d");
 
