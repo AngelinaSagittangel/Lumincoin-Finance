@@ -66,16 +66,13 @@
       <hr />
       <ul class="nav nav-pills flex-column mb-auto mt-4">
         <li class="nav-item">
-          <a href="/" class="nav-link active" aria-current="page">
+          <a href="/" class="a-link nav-link text-primary-emphasis">
             <i class="bi bi-house-door me-1"></i>
             Главная
           </a>
         </li>
         <li class="nav-item">
-          <a
-            href="/allfinance"
-            class="text-primary-emphasis nav-link link-dark"
-          >
+          <a href="/allfinance" class="a-link text-primary-emphasis nav-link">
             <i class="bi bi-cash-coin me-1"></i>
             Доходы & Расходы
           </a>
@@ -83,7 +80,8 @@
         <li class="nav-item">
           <div class="dropdown">
             <button
-              class="select-button w-100 btn dropdown-toggle d-flex align-items-center justify-content-between"
+              class="text-primary-emphasis nav-link select-button w-100 btn dropdown-toggle d-flex align-items-center justify-content-between"
+              id="btnCategory"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -107,16 +105,16 @@
         </li>
       </ul>
       <a href="#" class="nav-link link-dark text-primary-emphasis">
-        Баланс: <span class="ms-2 text-primary">500$</span>
+        Баланс: <span class="ms-2 text-primary" id="balanceUser"></span>
       </a>
       <hr />
-      <div class="dropdown d-flex justify-content-between">
+      <div class="dropdown d-flex justify-content-between align-items-center">
         <a
           href="javascript:void(0);"
           class="d-flex align-items-center link-dark text-decoration-none text-primary-emphasis"
         >
           <i class="bi bi-person-circle"></i>
-          <span class="ms-2">Роман Чернов</span>
+          <span class="ms-2" id="nameUser"></span>
         </a>
         <a href="#" id="logout-icon">
           <i class="bi bi-box-arrow-in-right"></i>
@@ -155,7 +153,9 @@
           data-bs-dismiss="modal"
           id="btnTrueExit"
         >
-          <a href="/logout" class="text-decoration-none text-white">Да, выйти</a>
+          <a href="/logout" class="text-decoration-none text-white"
+            >Да, выйти</a
+          >
         </button>
         <button type="button" class="btn btn-danger" id="btnFalseExit">
           Не выходить

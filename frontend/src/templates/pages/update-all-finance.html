@@ -1,35 +1,60 @@
 <h1 class="text-primary-emphasis mb-5">Редактирование дохода/расхода</h1>
 <form class="mt-3 d-flex flex-column gap-3" id="auth-form">
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Тип..." />
+    <select id="typeInput" class="form-select">
+      <option value="Доход">Доход</option>
+      <option value="Расход">Расход</option>
+    </select>
+    <div class="invalid-feedback">Выберите тип</div>
   </div>
 
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Категория..." />
+    <select
+      id="categoryInput"
+      class="form-select"
+      aria-label="Default select example"
+    >
+    </select>
+    <div class="invalid-feedback">Выберите категорию</div>
   </div>
 
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Сумма в $..." />
+    <input
+      id="amountInput"
+      type="text"
+      class="form-control"
+      placeholder="Сумма в $..."
+    />
+    <div class="invalid-feedback">Заполните сумму</div>
   </div>
 
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Дата..." />
+    <input
+      class="form-control"
+      type="text"
+      id="datepicker"
+      placeholder="Дата..."
+    />
+    <div class="invalid-feedback">Выберите дату</div>
   </div>
 
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Комментарий..." />
+    <input
+      id="commentInput"
+      type="text"
+      class="form-control"
+      placeholder="Комментарий..."
+    />
   </div>
 
   <div class="wrapper-btn">
-    <a href="/allfinance"
-      ><button id="auth-button" type="button" class="btn btn-success">
-        Сохранить
-      </button></a
-    >
+    <button id="auth-button" type="button" class="btn btn-success saveBtn">
+      Создать
+    </button>
     <a href="/allfinance"
       ><button id="auth-button" type="button" class="btn btn-danger">
         Отмена
-      </button></a
-    >
+      </button>
+    </a>
   </div>
 </form>

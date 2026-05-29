@@ -11,7 +11,6 @@ import { Auth, Login } from "./js/auth/login.js";
 import { Logout } from "./js/auth/logout.js";
 import { Main } from "./js/main.js";
 import { Registr, SignUp } from "./js/auth/sign-up.js";
-import { ModalLogout } from "./js/auth/modal-logout.js";
 
 export class Router {
   constructor() {
@@ -97,7 +96,7 @@ export class Router {
         },
       },
       {
-        route: "/finance-udpate",
+        route: "/finance-update",
         title: "Редактирование дохода",
         filePathTemplates: "/templates/pages/update-category.html",
         useLayout: "/templates/layout.html",
@@ -211,12 +210,11 @@ export class Router {
             newRoute.useLayout,
           ).then((response) => response.text());
           contentBlock = document.getElementById("content-layout");
-
-          ModalLogout.init();
         }
         contentBlock.innerHTML = await fetch(newRoute.filePathTemplates).then(
           (response) => response.text(),
         );
+        this.activateMenuItem(newRoute);
       }
       if (newRoute.load && typeof newRoute.load === "function") {
         newRoute.load();
@@ -225,6 +223,33 @@ export class Router {
       console.log("Not Route Found");
       history.pushState({}, "", "/");
       await this.activateRoute();
+    }
+  }
+  activateMenuItem(route) {
+    document.querySelectorAll(".a-link").forEach((item) => {
+      const href = item.getAttribute("href");
+      if (
+        (route.route.includes(href) && href !== "/") ||
+        (route.route === "/" && href === "/")
+      ) {
+        item.classList.add("active");
+        item.classList.remove("text-primary-emphasis");
+      } else {
+        item.classList.remove("active");
+        item.classList.add("text-primary-emphasis");
+      }
+    });
+    const categoryButton = document.querySelector(".select-button");
+    const categoryLinks = document.querySelectorAll(".selecet-li-item");
+    const isCategoryActive = Array.from(categoryLinks).some((link) => {
+      return route.route.includes(link.getAttribute("href"));
+    });
+    if (isCategoryActive) {
+      categoryButton.classList.add("active");
+      categoryButton.classList.remove("text-primary-emphasis");
+    } else {
+      categoryButton.classList.remove("active");
+      categoryButton.classList.add("text-primary-emphasis");
     }
   }
 }

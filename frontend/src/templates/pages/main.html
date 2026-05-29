@@ -1,34 +1,61 @@
-
 <h1 class="text-primary-emphasis">Главная</h1>
-<div class="tabs d-flex align-items-center gap-4 flex-wrap">
-  <button type="button" class="btn btn-secondary button-tabs">Сегодня</button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+<div class="tabs d-flex align-items-center gap-4 flex-wrap" id="btn-wrapper">
+  <button
+    id="todayBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
+    Сегодня
+  </button>
+  <button
+    id="weekBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Неделя
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="monthBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Месяц
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="yearBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Год
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="allDateBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Все
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="intervalBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Интервал
   </button>
   <div>с</div>
-  <a
-    href="#"
-    class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
-    >Дата</a
-  >
+  <input
+    class="input-datepicker"
+    type="text"
+    id="datepicker"
+    placeholder="Дата"
+  />
   <div>по</div>
-  <a
-    href="#"
-    class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
-    >Дата</a
-  >
+  <input
+    class="input-datepicker"
+    type="text"
+    id="datepicker2"
+    placeholder="Дата"
+  />
 </div>
 <div class="canvas-wrapper w-100 gap-4">
   <div class="canvas-container w-100">

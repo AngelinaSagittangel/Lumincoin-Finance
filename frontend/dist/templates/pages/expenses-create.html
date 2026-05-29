@@ -1,184 +1,22 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link
-      rel="stylesheet"
-      href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.json"
-    />
-    <link rel="stylesheet" href="../../styles/layout.css" />
-    <link rel="stylesheet" href="../../styles/expenses.css" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="../../static/img/logo.png" alt="logo" />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="main.html"
-                >Главная</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="all-finance.html">Доходы & Расходы</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Категории
-              </a>
-              <ul
-                class="dropdown-menu"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <li>
-                  <a
-                    class="dropdown-item selecet-li-item"
-                    href="../pages/finance.html"
-                    >Доходы</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item selecet-li-item"
-                    href="../pages/expenses.html"
-                    >Расходы</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container d-flex ms-0 ps-0">
-      <main class="main-block d-flex flex-nowrap">
-        <div class="d-flex flex-column flex-shrink-0 p-3 layout-container">
-          <a
-            href="main.html"
-            class="d-flex align-items-center justify-content-center mb-3 mb-md-0 text-decoration-none mt-3"
-          >
-            <picture>
-              <img src="../../static/img/logo.png" alt="logo" />
-            </picture>
-          </a>
-          <hr />
-          <ul class="nav nav-pills flex-column mb-auto mt-4">
-            <li class="nav-item">
-              <a href="main.html" class="nav-link text-primary-emphasis">
-                <i class="bi bi-house-door me-1"></i>
-                Главная
-              </a>
-            </li>
-            <li>
-              <a href="all-finance.html" class="text-primary-emphasis nav-link">
-                <i class="bi bi-cash-coin me-1"></i>
-                Доходы & Расходы
-              </a>
-            </li>
-            <li>
-              <div class="dropdown">
-                <button
-                  class="select-button w-100 btn btn-primary dropdown-toggle d-flex align-items-center justify-content-between"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Категории
-                  <i class="bi bi-chevron-down"></i>
-                </button>
-                <ul class="dropdown-menu w-100 border border-primary p-0">
-                  <li>
-                    <a class="dropdown-item selecet-li-item" href="finance.html"
-                      >Доходы</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item selecet-li-item active"
-                      href="expenses.html"
-                      >Расходы</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-          <a href="#" class="nav-link text-primary-emphasis">
-            Баланс: <span class="ms-2 text-primary">500$</span>
-          </a>
-          <hr />
-          <div class="dropdown">
-            <a
-              href="#"
-              class="d-flex align-items-center link-dark text-decoration-none text-primary-emphasis"
-            >
-              <img
-                src="https://github.com/mdo.png"
-                alt=""
-                width="32"
-                height="32"
-                class="rounded-circle me-2"
-              />
-              <span class="ms-2">Роман Чернов</span>
-            </a>
-          </div>
-        </div>
-      </main>
+<h1 class="text-primary-emphasis mb-5">Создание категории расходов</h1>
+<form id="auth-form">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" id="new-category-input" />
+    <div class="invalid-feedback">Заполните название категории</div>
+  </div>
 
-      <div class="content d-flex gap-5 p-2 p-lg-5 w-100 flex-column">
-        <h1 class="text-primary-emphasis mb-5">Создание категории расходов</h1>
-        <form id="auth-form">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" />
-          </div>
-
-          <div class="wrapper-btn">
-            <a href="expenses.html"
-              ><button id="auth-button" type="button" class="btn btn-success">
-                Создать
-              </button></a
-            >
-            <a href="expenses.html"
-              ><button id="auth-button" type="button" class="btn btn-danger">
-                Отмена
-              </button></a
-            >
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+  <div class="wrapper-btn">
+    <button
+      id="auth-button"
+      type="button"
+      class="btn btn-success save-new-category"
+    >
+      Создать
+    </button>
+    <a href="/expenses"
+      ><button id="auth-button" type="button" class="btn btn-danger">
+        Отмена
+      </button></a
+    >
+  </div>
+</form>

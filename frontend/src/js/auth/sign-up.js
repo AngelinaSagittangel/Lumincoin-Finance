@@ -85,7 +85,7 @@ export class SignUp {
   async signUp() {
     this.commonError.style.display = "none";
     if (this.validateForm()) {
-      const result = await HttpUtils.request("/signup", "POST", {
+      const result = await HttpUtils.request("/signup", "POST", false, {
         name: this.inputName.value,
         lastName: this.inputLastName.value,
         email: this.inputEmail.value,

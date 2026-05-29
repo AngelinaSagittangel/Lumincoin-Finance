@@ -1,15 +1,18 @@
 <h1 class="text-primary-emphasis mb-5">Создание категории расходов</h1>
 <form id="auth-form">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" id="new-category-input" />
+    <div class="invalid-feedback">Заполните название категории</div>
   </div>
 
   <div class="wrapper-btn">
-    <a href="/expenses"
-      ><button id="auth-button" type="button" class="btn btn-success">
-        Создать
-      </button></a
+    <button
+      id="auth-button"
+      type="button"
+      class="btn btn-success save-new-category"
     >
+      Создать
+    </button>
     <a href="/expenses"
       ><button id="auth-button" type="button" class="btn btn-danger">
         Отмена
