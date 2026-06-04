@@ -46,34 +46,11 @@ export class Main {
     this.intervalFromInput = document.getElementById("datepicker");
     this.intervalToInput = document.getElementById("datepicker2");
 
-    $("#datepicker").datepicker({
-      language: "ru",
-      format: "yyyy-mm-dd",
-    });
-
-    $("#datepicker2").datepicker({
-      language: "ru",
-      format: "yyyy-mm-dd",
-    });
-
-    // this.changeIntervalInput();
-    // this.intervalFromInput.addEventListener("change", () =>
-    //   this.changeIntervalInput(),
-    // );
-    // this.intervalToInput.addEventListener("change", () =>
-    //   this.changeIntervalInput(),
-    // );
+  
     this.activeBtn();
   }
 
-  // changeIntervalInput() {
-  //   const fromValue = this.intervalFromInput.value.trim();
-  //   if (!this.intervalFromInput.value || !this.intervalToInput.value) {
-  //     this.intervalBtn.classList.add("disabled");
-  //   } else if (this.intervalFromInput.value || this.intervalToInput.value) {
-  //     this.intervalBtn.classList.remove("disabled");
-  //   }
-  // }
+
 
   activeBtn() {
     const btnWrapper = document.getElementById("btn-wrapper");

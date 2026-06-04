@@ -20,9 +20,25 @@ export class ExpensesUpdate {
     if (!this.id) {
       return this.openNewRoute("/expenses");
     }
+    this.showNameInput();
     document
       .querySelector(".update-new-category")
       .addEventListener("click", this.updateCategory.bind(this));
+  }
+
+  async showNameInput() {
+    const result = await HttpUtils.request("/categories/expense/" + this.id);
+    if (result.redirect) {
+      return this.openNewRoute("/login");
+    }
+    if (
+      result.error ||
+      !result.response ||
+      (result.response && result.response.error)
+    ) {
+      return alert("Ошибка при запросе данных");
+    }
+    this.updateCategoryInput.value = result.response.title;
   }
 
   validateForm() {

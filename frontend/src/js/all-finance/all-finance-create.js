@@ -14,6 +14,12 @@ export class AllFinanceCreate {
     UserInfo.balance();
     UserInfo.userName();
 
+    const urlParams = new URLSearchParams(window.location.search);
+    this.currentType = urlParams.get("type");
+    if (!this.currentType) {
+      return this.openNewRoute("/all-finance");
+    }
+
     $(function () {
       $("#datepicker").datepicker({
         language: "ru",
@@ -27,21 +33,22 @@ export class AllFinanceCreate {
     this.dateInput = document.getElementById("datepicker");
     this.commentInput = document.getElementById("commentInput");
 
-    this.currentType = "income";
+    this.saveBtn = document.querySelector(".saveBtn");
+    if (this.typeInput) {
+      this.typeInput.addEventListener("change", this.getCategory.bind(this));
+    }
+    if (this.saveBtn) {
+      this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
+    }
 
-    document
-      .querySelector(".saveBtn")
-      .addEventListener("click", this.saveCategory.bind(this));
-
-    this.typeInput.addEventListener("change", this.getType.bind(this));
-    this.typeInput.addEventListener("change", this.getCategory.bind(this));
-  }
-
-  getType() {
-    if (this.typeInput.value === "Доход") {
-      this.currentType = "income";
-    } else if (this.typeInput.value === "Расход") {
-      this.currentType = "expense";
+    if (this.typeInput) {
+      if (this.currentType === "income") {
+        this.typeInput.value = "Доход";
+        this.getCategory();
+      } else if (this.currentType === "expense") {
+        this.typeInput.value = "Расход";
+        this.getCategory();
+      }
     }
   }
 

@@ -12,6 +12,9 @@ export class AllFinance {
     UserInfo.userName();
     this.showCategoryDate("today");
 
+    this.btnCreateExpense = document.getElementById("btnCreateExpense");
+    this.btnCreateFinance = document.getElementById("btnCreateFinance");
+
     this.todayBtn = document.getElementById("todayBtn");
     this.todayBtn.addEventListener("click", () =>
       this.showCategoryDate("today"),
@@ -38,19 +41,19 @@ export class AllFinance {
     this.intervalToInput = document.getElementById("datepicker2");
     this.activeBtn();
 
-    $(function () {
-      $("#datepicker").datepicker({
-        language: "ru",
-        format: "yyyy-mm-dd",
-      });
-    });
-    $(function () {
-      $("#datepicker2").datepicker({
-        language: "ru",
-        format: "yyyy-mm-dd",
-      });
-    });
     this.initModalCloseHandlers();
+    this.openCreate();
+  }
+
+  openCreate() {
+    this.btnCreateFinance.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.openNewRoute("/allfinance-create?type=income");
+    });
+    this.btnCreateExpense.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.openNewRoute("/allfinance-create?type=expense");
+    });
   }
 
   openModal(date) {
@@ -199,6 +202,7 @@ export class AllFinance {
         "link-dark",
         "text-decoration-none",
         "delete-category",
+        "me-2",
       );
       const deleteIcon = document.createElement("i");
       deleteIcon.classList.add("bi", "bi-trash");

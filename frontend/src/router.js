@@ -247,7 +247,7 @@ export class Router {
     if (isCategoryActive) {
       categoryButton.classList.add("active");
       categoryButton.classList.remove("text-primary-emphasis");
-    } else {
+    } else if (categoryButton) {
       categoryButton.classList.remove("active");
       categoryButton.classList.add("text-primary-emphasis");
     }

@@ -42,20 +42,18 @@
   >
     Интервал
   </button>
-  <div>с</div>
-  <input
-    class="input-datepicker"
-    type="text"
-    id="datepicker"
-    placeholder="Дата"
-  />
-  <div>по</div>
-  <input
-    class="input-datepicker"
-    type="text"
-    id="datepicker2"
-    placeholder="Дата"
-  />
+    <div class="d-flex align-items-center justify-content-center gap-3">
+    <div>с</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker"/>
+      <span class="date-text">Дата</span>
+    </div>
+    <div>по</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker2"/>
+      <span class="date-text">Дата</span>
+    </div>
+  </div>
 </div>
 <div class="canvas-wrapper w-100 gap-4">
   <div class="canvas-container w-100">

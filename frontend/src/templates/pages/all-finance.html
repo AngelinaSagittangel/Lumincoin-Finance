@@ -1,7 +1,7 @@
 <h1 class="text-primary-emphasis">Доходы и расходы</h1>
 <div class="d-flex">
-  <a href="/allfinance-create" class="btn btn-success me-2"> Создать доход </a>
-  <a href="/allfinance-create" class="btn btn-danger me-2"> Создать расход </a>
+  <a href="#" class="btn btn-success me-2" id="btnCreateFinance"> Создать доход </a>
+  <a href="#" class="btn btn-danger me-2" id="btnCreateExpense"> Создать расход </a>
 </div>
 <div class="tabs d-flex align-items-center gap-4 flex-wrap" id="btn-wrapper">
   <button
@@ -46,20 +46,18 @@
   >
     Интервал
   </button>
-  <div>с</div>
-  <input
-    class="input-datepicker"
-    type="text"
-    id="datepicker"
-    placeholder="Дата"
-  />
-  <div>по</div>
-  <input
-    class="input-datepicker"
-    type="text"
-    id="datepicker2"
-    placeholder="Дата"
-  />
+  <div class="d-flex align-items-center justify-content-center gap-3">
+    <div>с</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker"/>
+      <span class="date-text">Дата</span>
+    </div>
+    <div>по</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker2"/>
+      <span class="date-text">Дата</span>
+    </div>
+  </div>
 </div>
 
 <div class="table-responsive" id="table-wrapper">
@@ -98,10 +96,16 @@
         </h1>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-success success-delete-button" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-success success-delete-button"
+          data-bs-dismiss="modal"
+        >
           Да, удалить
         </button>
-        <button type="button" class="btn btn-danger close-delete-modal">Не удалять</button>
+        <button type="button" class="btn btn-danger close-delete-modal">
+          Не удалять
+        </button>
       </div>
     </div>
   </div>
