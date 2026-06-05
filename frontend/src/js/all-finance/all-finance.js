@@ -39,6 +39,23 @@ export class AllFinance {
     );
     this.intervalFromInput = document.getElementById("datepicker");
     this.intervalToInput = document.getElementById("datepicker2");
+    this.spanDatepicker = document.getElementById("span-datepicker");
+    this.spanDatepicker2 = document.getElementById("span-datepicker2");
+    this.intervalFromInput.addEventListener(
+      "click",
+      this.showDateInputDatepicker.bind(this),
+    );
+    this.intervalToInput.addEventListener(
+      "click",
+      this.showDateInputDatepicker2.bind(this),
+    );
+    this.intervalFromInput.addEventListener("input", () => {
+      this.activateIntervalBtn();
+    });
+    this.intervalToInput.addEventListener("input", () => {
+      this.activateIntervalBtn();
+    });
+
     this.activeBtn();
 
     this.initModalCloseHandlers();
@@ -104,6 +121,29 @@ export class AllFinance {
       button.classList.add("btn-secondary");
       button.classList.remove("btn-outline-secondary");
     });
+  }
+
+  showDateInputDatepicker() {
+    this.intervalFromInput.style.opacity = 1;
+    this.spanDatepicker.style.opacity = 0;
+    this.activateIntervalBtn();
+  }
+
+  showDateInputDatepicker2() {
+    this.intervalToInput.style.opacity = 1;
+    this.spanDatepicker2.style.opacity = 0;
+    this.activateIntervalBtn();
+  }
+
+  activateIntervalBtn() {
+    const fromDateFilled = this.intervalFromInput.value !== "";
+    const toDateFilled = this.intervalToInput.value !== "";
+
+    if (fromDateFilled && toDateFilled) {
+      this.intervalBtn.removeAttribute("disabled");
+    } else {
+      this.intervalBtn.setAttribute("disabled", "disabled");
+    }
   }
 
   showDate(data) {
@@ -178,7 +218,6 @@ export class AllFinance {
     const table = document.getElementById("table-finance");
     const tableBody = table.querySelector("tbody");
     tableBody.innerHTML = " ";
-
     for (let i = 0; i < date.length; i++) {
       const trElement = document.createElement("tr");
       trElement.insertCell().innerText = i + 1;
@@ -193,7 +232,8 @@ export class AllFinance {
       }
       trElement.insertCell().innerText = date[i].category;
       trElement.insertCell().innerText = `${date[i].amount}$`;
-      trElement.insertCell().innerText = date[i].date;
+      trElement.insertCell().innerText = this.formateDate(date[i].date);
+
       trElement.insertCell().innerText = date[i].comment;
       const iconsCell = trElement.insertCell();
       const deleteLink = document.createElement("a");
@@ -233,6 +273,11 @@ export class AllFinance {
         this.openModal(date[i]);
       });
     }
+  }
+
+  formateDate(date) {
+    const [year, month, day] = date.split("-");
+    return `${day}.${month}.${year}`;
   }
 
   async deleteCategory(date) {

@@ -1,7 +1,7 @@
 <h1 class="text-primary-emphasis">Создание дохода/расхода</h1>
 <form class="mt-3 d-flex flex-column gap-3" id="auth-form">
   <div class="input-group">
-    <select id="typeInput" class="form-select">
+    <select id="typeInput" class="form-select rounded">
       <option value="" disabled selected>Выберите тип</option>
       <option value="Доход">Доход</option>
       <option value="Расход">Расход</option>
@@ -12,7 +12,7 @@
   <div class="input-group">
     <select
       id="categoryInput"
-      class="form-select"
+      class="form-select rounded"
       aria-label="Default select example"
     >
       <option value="" disabled selected>Выберите категорию</option>
@@ -24,20 +24,19 @@
     <input
       id="amountInput"
       type="text"
-      class="form-control"
+      class="form-control rounded"
       placeholder="Сумма в $..."
     />
     <div class="invalid-feedback">Заполните сумму</div>
   </div>
 
   <div class="input-group">
-    <input class=" form-control" type="date" id="datepicker"/>
-    <!-- <input
-      class="form-control"
+    <input
+      class="form-control rounded"
       type="text"
       id="datepicker"
       placeholder="Дата..."
-    /> -->
+    />
     <div class="invalid-feedback">Выберите дату</div>
   </div>
 
@@ -45,7 +44,7 @@
     <input
       id="commentInput"
       type="text"
-      class="form-control"
+      class="form-control rounded"
       placeholder="Комментарий..."
     />
   </div>

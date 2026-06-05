@@ -64,9 +64,9 @@
   width: auto;
   text-align: center;
   max-width: 86px;
-  opacity: 0;
   position: relative;
   z-index: 100;
+  opacity: 0;
 }
 .input-datepicker::-webkit-calendar-picker-indicator {
   position: absolute;
@@ -74,6 +74,7 @@
   opacity: 0;
 }
 .date-text {
+  display: inline-block;
   position: absolute;
   width: 100%;
   border-bottom: 1px solid;
@@ -81,20 +82,3 @@
   transform: translateX(-50%);
   text-align: center;
 }
-
-.input-datepicker:active {
-  opacity: 1;
-}
-
-.input-datepicker:focus {
-  opacity: 1;
-}
-
-.input-datepicker:active + .date-text {
-  opacity: 0;
-}
-
-.input-datepicker:focus + .date-text {
-  opacity: 0;
-}
-

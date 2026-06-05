@@ -5,6 +5,8 @@ import { UserInfo } from "../auth/userInfo.js";
 
 export class AllFinanceCreate {
   constructor(openNewRoute) {
+    this.currentType = null;
+
     this.openNewRoute = openNewRoute;
 
     if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
@@ -27,6 +29,11 @@ export class AllFinanceCreate {
       });
     });
 
+    let valueInput = null;
+
+    this.financeValueType = document.getElementById("finance-value");
+    this.expenseValueType = document.getElementById("expense-value");
+
     this.typeInput = document.getElementById("typeInput");
     this.categoryInput = document.getElementById("categoryInput");
     this.amountInput = document.getElementById("amountInput");
@@ -34,14 +41,17 @@ export class AllFinanceCreate {
     this.commentInput = document.getElementById("commentInput");
 
     this.saveBtn = document.querySelector(".saveBtn");
-    if (this.typeInput) {
-      this.typeInput.addEventListener("change", this.getCategory.bind(this));
-    }
+
     if (this.saveBtn) {
       this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
     }
 
     if (this.typeInput) {
+      this.typeInput.addEventListener(
+        "change",
+        this.changeTypeInput.bind(this),
+      );
+
       if (this.currentType === "income") {
         this.typeInput.value = "Доход";
         this.getCategory();
@@ -50,6 +60,18 @@ export class AllFinanceCreate {
         this.getCategory();
       }
     }
+  }
+
+  changeTypeInput() {
+    const selecdType = this.typeInput.value;
+
+    if (selecdType === "Доход") {
+      this.currentType = "income";
+    } else if (selecdType === "Расход") {
+      this.currentType = "expense";
+    }
+
+    this.getCategory();
   }
 
   async getCategory() {
