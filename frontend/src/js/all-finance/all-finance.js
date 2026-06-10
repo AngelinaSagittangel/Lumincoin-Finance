@@ -1,6 +1,7 @@
 import { AuthUtils } from "../../utils/auth-utils.js";
 import { HttpUtils } from "../../utils/http-utils.js";
 import { ModalLogout } from "../auth/modal-logout.js";
+import { UpdateBalance } from "../auth/update-balance.js";
 import { UserInfo, userInfo } from "../auth/userInfo.js";
 
 export class AllFinance {
@@ -10,6 +11,7 @@ export class AllFinance {
     ModalLogout.init();
     UserInfo.balance();
     UserInfo.userName();
+    UpdateBalance.init();
     this.showCategoryDate("today");
 
     this.btnCreateExpense = document.getElementById("btnCreateExpense");

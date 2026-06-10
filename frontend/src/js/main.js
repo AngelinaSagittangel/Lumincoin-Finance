@@ -3,6 +3,7 @@ import { AuthUtils } from "../utils/auth-utils.js";
 import { ModalLogout } from "./auth/modal-logout.js";
 import { HttpUtils } from "../utils/http-utils.js";
 import { UserInfo } from "./auth/userInfo.js";
+import { UpdateBalance } from "./auth/update-balance.js";
 
 export class Main {
   constructor(openNewRoute) {
@@ -11,9 +12,11 @@ export class Main {
     if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
       return this.openNewRoute("/login");
     }
+
     ModalLogout.init();
     UserInfo.balance();
     UserInfo.userName();
+    UpdateBalance.init();
     this.showCategoryDate("today");
 
     this.incomeChart = null;

@@ -1,6 +1,7 @@
 import { AuthUtils } from "../../utils/auth-utils.js";
 import { HttpUtils } from "../../utils/http-utils.js";
 import { ModalLogout } from "../auth/modal-logout.js";
+import { UpdateBalance } from "../auth/update-balance.js";
 import { UserInfo } from "../auth/userInfo.js";
 
 export class Expenses {
@@ -11,6 +12,7 @@ export class Expenses {
     ModalLogout.init();
     UserInfo.balance();
     UserInfo.userName();
+    UpdateBalance.init();
     this.getExpenses();
   }
 

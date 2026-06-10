@@ -1,6 +1,7 @@
 import { AuthUtils } from "../../utils/auth-utils.js";
 import { HttpUtils } from "../../utils/http-utils.js";
 import { ModalLogout } from "../auth/modal-logout.js";
+import { UpdateBalance } from "../auth/update-balance.js";
 import { UserInfo } from "../auth/userInfo.js";
 
 export class AllFinanceUpdate {
@@ -28,6 +29,7 @@ export class AllFinanceUpdate {
     ModalLogout.init();
     UserInfo.balance();
     UserInfo.userName();
+    UpdateBalance.init();
     this.getInfo();
   }
 

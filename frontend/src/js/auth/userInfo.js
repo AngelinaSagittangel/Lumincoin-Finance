@@ -25,4 +25,5 @@ export class UserInfo {
     const user = JSON.parse(userString);
     nameUser.innerText = `${user.name} ${user.lastName}`;
   }
+
 }
