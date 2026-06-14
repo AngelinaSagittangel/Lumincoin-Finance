@@ -2,7 +2,8 @@ import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 
 export class UserInfo {
-  static async balance() {
+  static async balance(openNewRoute) {
+    this.openNewRoute = openNewRoute;
     this.balanceUser = document.getElementById("balanceUser");
 
     const result = await HttpUtils.request("/balance");
@@ -25,5 +26,4 @@ export class UserInfo {
     const user = JSON.parse(userString);
     nameUser.innerText = `${user.name} ${user.lastName}`;
   }
-
 }

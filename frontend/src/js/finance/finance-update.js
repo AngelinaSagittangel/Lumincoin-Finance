@@ -12,7 +12,7 @@ export class FinanceUpdate {
       return this.openNewRoute("/login");
     }
     ModalLogout.init();
-    UserInfo.balance();
+    UserInfo.balance(this.openNewRoute);
     UserInfo.userName();
     UpdateBalance.init();
     this.updateCategoryInput = document.getElementById("update-category-input");

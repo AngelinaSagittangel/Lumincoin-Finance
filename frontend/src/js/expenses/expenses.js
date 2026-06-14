@@ -10,7 +10,7 @@ export class Expenses {
     this.currentCategory = null;
 
     ModalLogout.init();
-    UserInfo.balance();
+    UserInfo.balance(this.openNewRoute);
     UserInfo.userName();
     UpdateBalance.init();
     this.getExpenses();

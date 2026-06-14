@@ -27,7 +27,7 @@ export class AllFinanceUpdate {
     this.saveBtn = document.querySelector(".saveBtn");
     this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
     ModalLogout.init();
-    UserInfo.balance();
+    UserInfo.balance(this.openNewRoute);
     UserInfo.userName();
     UpdateBalance.init();
     this.getInfo();
