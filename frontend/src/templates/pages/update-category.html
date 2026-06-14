@@ -1,15 +1,18 @@
 <h1 class="text-primary-emphasis">Редактирование категории доходов</h1>
 <form id="auth-form">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" id="update-category-input" />
+    <div class="invalid-feedback">Заполните название категории</div>
   </div>
 
   <div class="wrapper-btn">
-    <a href="/finance"
-      ><button id="auth-button" type="button" class="btn btn-success">
-        Сохранить
-      </button></a
+    <button
+      id="auth-button"
+      type="button"
+      class="btn btn-success update-new-category"
     >
+      Сохранить
+    </button>
     <a href="/finance"
       ><button id="auth-button" type="button" class="btn btn-danger">
         Отмена

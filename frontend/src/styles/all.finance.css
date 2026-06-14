@@ -5,13 +5,12 @@
   }
 }
 
-
 .button-select::after {
   content: none;
 }
 
 .link-active {
-    color: white;
+  color: white;
 }
 
 .button-tabs {
@@ -29,15 +28,15 @@
 }
 
 .modal-finance {
-    background-color: #353535cf;
+  background-color: #353535cf;
 }
 
 .modal-header {
-    border: none;
+  border: none;
 }
 
 .modal-footer {
-    border: none;
+  border: none;
 }
 
 .wrapper-btn {
@@ -50,7 +49,36 @@
     flex-direction: column;
   }
 
-  .wrapper-btn button{
+  .wrapper-btn button {
     width: 100%;
   }
+}
+
+.input-datepicker {
+  margin: 0;
+  display: inline-block;
+  outline: none;
+  padding: 0;
+  border: none;
+  border-bottom: 1px solid;
+  width: auto;
+  text-align: center;
+  max-width: 86px;
+  position: relative;
+  z-index: 100;
+  opacity: 0;
+}
+.input-datepicker::-webkit-calendar-picker-indicator {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+}
+.date-text {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  border-bottom: 1px solid;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }

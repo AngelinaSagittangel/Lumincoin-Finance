@@ -1,40 +1,70 @@
 <h1 class="text-primary-emphasis">Доходы и расходы</h1>
 <div class="d-flex">
-  <a href="/allfinance-create" class="btn btn-success me-2"> Создать доход </a>
-  <a href="/allfinance-create" class="btn btn-danger me-2"> Создать расход </a>
+  <a href="#" class="btn btn-success me-2" id="btnCreateFinance"> Создать доход </a>
+  <a href="#" class="btn btn-danger me-2" id="btnCreateExpense"> Создать расход </a>
 </div>
-<div class="tabs d-flex align-items-center gap-4 flex-wrap">
-  <button type="button" class="btn btn-secondary button-tabs">Сегодня</button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+<div class="tabs d-flex align-items-center gap-4 flex-wrap" id="btn-wrapper">
+  <button
+    id="todayBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
+    Сегодня
+  </button>
+  <button
+    id="weekBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Неделя
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="monthBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Месяц
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="yearBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Год
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="allDateBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+  >
     Все
   </button>
-  <button type="button" class="btn btn-outline-secondary button-tabs">
+  <button
+    id="intervalBtn"
+    type="button"
+    class="btn btn-outline-secondary button-tabs"
+    disabled
+  >
     Интервал
   </button>
-  <div>с</div>
-  <a
-    href="#"
-    class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
-    >Дата</a
-  >
-  <div>по</div>
-  <a
-    href="#"
-    class="link-secondary link-offset-2 link-underline-opacity-100 link-underline-opacity-100-hover"
-    >Дата</a
-  >
+
+  <div class="d-flex align-items-center justify-content-center gap-3">
+    <div>с</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker"/>
+      <span class="date-text" id="span-datepicker">Дата</span>
+    </div>
+    <div>по</div>
+    <div class="date-wrapper position-relative">
+      <input class="input-datepicker" type="date" id="datepicker2"/>
+      <span class="date-text" id="span-datepicker2">Дата</span>
+    </div>
+  </div>
+
 </div>
-<div class="table-responsive">
-  <table class="table text-center w-100">
+
+<div class="table-responsive" id="table-wrapper">
+  <table class="table text-center w-100" id="table-finance">
     <thead>
       <tr>
         <th class="text-primary-emphasis" scope="col">№ операции</th>
@@ -46,40 +76,7 @@
         <th class="text-primary-emphasis" scope="col"></th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td class="text-success">доход</td>
-        <td>зарплата</td>
-        <td>500$</td>
-        <td>11.09.2022</td>
-        <td></td>
-        <td>
-          <a href="#" class="link-dark text-decoration-none delete-category">
-            <i class="bi bi-trash"></i>
-          </a>
-          <a href="/allfinance-update" class="link-dark text-decoration-none">
-            <i class="bi bi-pencil"></i>
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">1</th>
-        <td class="text-danger">расход</td>
-        <td>жильё</td>
-        <td>2 500$</td>
-        <td>12.09.2022</td>
-        <td></td>
-        <td>
-          <a href="#" class="link-dark text-decoration-none delete-category">
-            <i class="bi bi-trash"></i>
-          </a>
-          <a href="/allfinance-update" class="link-dark text-decoration-none">
-            <i class="bi bi-pencil"></i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
+    <tbody></tbody>
   </table>
 </div>
 
@@ -102,10 +99,16 @@
         </h1>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-success success-delete-button"
+          data-bs-dismiss="modal"
+        >
           Да, удалить
         </button>
-        <button type="button" class="btn btn-danger">Не удалять</button>
+        <button type="button" class="btn btn-danger close-delete-modal">
+          Не удалять
+        </button>
       </div>
     </div>
   </div>

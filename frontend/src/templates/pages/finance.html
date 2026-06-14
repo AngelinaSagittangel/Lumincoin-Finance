@@ -1,51 +1,6 @@
 <h1 class="text-primary-emphasis">Доходы</h1>
-<div class="row">
-  <div class="col-xl-4 col-lg-6 mb-4">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title mb-2 card-title-item">Депозиты</h3>
-
-        <a href="/finance-udpate" class="btn btn-primary mb-2"
-          >Редактировать</a
-        >
-        <a href="#" class="btn btn-danger delete-category mb-2">Удалить</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-4 col-lg-6 mb-4">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title mb-2 card-title-item">Зарплата</h3>
-        <a href="/finance-udpate" class="btn btn-primary mb-2"
-          >Редактировать</a
-        >
-        <a href="#" class="btn btn-danger delete-category mb-2">Удалить</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-4 col-lg-6 mb-4">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title mb-2 card-title-item">Сбережения</h3>
-        <a href="/finance-udpate" class="btn btn-primary mb-2"
-          >Редактировать</a
-        >
-        <a href="#" class="btn btn-danger delete-category mb-2">Удалить</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-4 col-lg-6 mb-4">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title mb-2 card-title-item">Инвестиции</h3>
-        <a href="/finance-udpate" class="btn btn-primary mb-2"
-          >Редактировать</a
-        >
-        <a href="#" class="btn btn-danger delete-category mb-2">Удалить</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-4 col-lg-6 mb-4">
+<div class="row finance-wrapper">
+  <div class="col-xl-4 col-lg-6 mb-4 card-add-wrapper">
     <div class="card card-add">
       <div class="card-body d-flex align-items-center justify-content-center">
         <a href="/finance-create">
@@ -76,10 +31,10 @@
         </h1>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-success success-delete-button" data-bs-dismiss="modal">
           Да, удалить
         </button>
-        <button type="button" class="btn btn-danger">Не удалять</button>
+        <button type="button" class="btn btn-danger close-delete-modal">Не удалять</button>
       </div>
     </div>
   </div>

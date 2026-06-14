@@ -44,6 +44,22 @@ module.exports = {
           to: "js",
         },
         {
+          from: "./lib/jquery-4.0.0.min.js",
+          to: "js",
+        },
+        {
+          from: "./lib/bootstrap-datepicker.min.js",
+          to: "js",
+        },
+        {
+          from: "./lib/bootstrap-datepicker.min.css",
+          to: "css",
+        },
+        {
+          from: "./lib/bootstrap-datepicker.ru.min.js",
+          to: "js",
+        },
+        {
           from: "./node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff",
           to: "css/fonts",
         },

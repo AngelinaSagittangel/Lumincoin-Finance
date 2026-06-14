@@ -66,16 +66,13 @@
       <hr />
       <ul class="nav nav-pills flex-column mb-auto mt-4">
         <li class="nav-item">
-          <a href="/" class="nav-link active" aria-current="page">
+          <a href="/" class="a-link nav-link text-primary-emphasis">
             <i class="bi bi-house-door me-1"></i>
             Главная
           </a>
         </li>
         <li class="nav-item">
-          <a
-            href="/allfinance"
-            class="text-primary-emphasis nav-link link-dark"
-          >
+          <a href="/allfinance" class="a-link text-primary-emphasis nav-link">
             <i class="bi bi-cash-coin me-1"></i>
             Доходы & Расходы
           </a>
@@ -83,7 +80,8 @@
         <li class="nav-item">
           <div class="dropdown">
             <button
-              class="select-button w-100 btn dropdown-toggle d-flex align-items-center justify-content-between"
+              class="text-primary-emphasis nav-link select-button w-100 btn dropdown-toggle d-flex align-items-center justify-content-between"
+              id="btnCategory"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -107,16 +105,16 @@
         </li>
       </ul>
       <a href="#" class="nav-link link-dark text-primary-emphasis">
-        Баланс: <span class="ms-2 text-primary">500$</span>
+        Баланс: <span class="ms-2 text-primary" id="balanceUser"></span>
       </a>
       <hr />
-      <div class="dropdown d-flex justify-content-between">
+      <div class="dropdown d-flex justify-content-between align-items-center">
         <a
           href="javascript:void(0);"
           class="d-flex align-items-center link-dark text-decoration-none text-primary-emphasis"
         >
           <i class="bi bi-person-circle"></i>
-          <span class="ms-2">Роман Чернов</span>
+          <span class="ms-2" id="nameUser"></span>
         </a>
         <a href="#" id="logout-icon">
           <i class="bi bi-box-arrow-in-right"></i>
@@ -126,7 +124,7 @@
   </main>
   <div
     id="content-layout"
-    class="content d-flex justify-content-start gap-5 p-2 p-lg-5 w-100"
+    class="content d-flex justify-content-start gap-5 p-2 pt-lg-5 ps-lg-5 w-100"
   ></div>
 </div>
 
@@ -155,10 +153,48 @@
           data-bs-dismiss="modal"
           id="btnTrueExit"
         >
-          <a href="/logout" class="text-decoration-none text-white">Да, выйти</a>
+          <a href="/logout" class="text-decoration-none text-white"
+            >Да, выйти</a
+          >
         </button>
         <button type="button" class="btn btn-danger" id="btnFalseExit">
           Не выходить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade modal-update-balance"
+  id="exampleModalCenter"
+  tabindex="-1"
+  aria-labelledby="exampleModalCenterTitle"
+  style="display: none"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+      <div class="modal-header mx-auto d-flex flex-column gap-3">
+        <h1
+          class="modal-title fs-5 text-center modal-title"
+          id="exampleModalCenter2Title"
+        >
+          Введите актуальный баланс
+        </h1>
+        <input class="w-100 rounded border-1 input-update-balance" id="textNewBalance" type="number" placeholder="Введите баланс" />
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          id="btnSaveBalance"
+        >
+          <a href="#" class="text-decoration-none text-white">Сохранить</a>
+        </button>
+        <button type="button" class="btn btn-danger" id="btnExitBalance">
+          Отмена
         </button>
       </div>
     </div>

@@ -19,7 +19,6 @@ export class ModalLogout {
     formModal.classList.toggle("show");
     formModal.style.display = "block";
 
-
     if (btnFalseExit) {
       btnFalseExit.addEventListener("click", () => {
         formModal.classList.toggle("show");
