@@ -1,18 +1,24 @@
-import { AllFinanceCreate } from "./js/all-finance/all-finance-create.js";
-import { AllFinanceUpdate } from "./js/all-finance/all-finance-update.js";
-import { AllFinance } from "./js/all-finance/all-finance.js";
-import { ExpensesCreate } from "./js/expenses/expenses-create.js";
-import { ExpensesUpdate } from "./js/expenses/expenses-update.js";
-import { Expenses } from "./js/expenses/expenses.js";
-import { FinanceCreate } from "./js/finance/finance-create.js";
-import { FinanceUpdate } from "./js/finance/finance-update.js";
-import { Finance } from "./js/finance/finance.js";
-import { Auth, Login } from "./js/auth/login.js";
-import { Logout } from "./js/auth/logout.js";
-import { Main } from "./js/main.js";
-import { Registr, SignUp } from "./js/auth/sign-up.js";
+import { AllFinanceCreate } from "./js/all-finance/all-finance-create";
+import { AllFinanceUpdate } from "./js/all-finance/all-finance-update";
+import { AllFinance } from "./js/all-finance/all-finance";
+import { ExpensesCreate } from "./js/expenses/expenses-create";
+import { ExpensesUpdate } from "./js/expenses/expenses-update";
+import { Expenses } from "./js/expenses/expenses";
+import { FinanceCreate } from "./js/finance/finance-create";
+import { FinanceUpdate } from "./js/finance/finance-update";
+import { Finance } from "./js/finance/finance";
+import { Login } from "./js/auth/login";
+import { Logout } from "./js/auth/logout";
+import { Main } from "./js/main";
+import { SignUp } from "./js/auth/sign-up";
+import { RouteType } from "./types/route.type";
 
 export class Router {
+  private titlePageElement: HTMLElement | null;
+  private contentPageElement: HTMLElement | null;
+
+  private routes: RouteType[];
+
   constructor() {
     this.titlePageElement = document.getElementById("title");
     this.contentPageElement = document.getElementById("content");
@@ -134,38 +140,48 @@ export class Router {
     ];
   }
 
-  initEvents() {
-    window.addEventListener("DOMContentLoaded", this.activateRoute.bind(this));
-    window.addEventListener("popstate", this.activateRoute.bind(this));
+  private initEvents(): void {
+    window.addEventListener("DOMContentLoaded", () => {
+      this.activateRoute();
+    });
+    window.addEventListener("popstate", () => {
+      this.activateRoute();
+    });
     window.addEventListener("click", this.clickHandler.bind(this));
   }
 
-  async openNewRoute(url) {
-    const currentRoute = window.location.pathname;
+  public async openNewRoute(url: string): Promise<void> {
+    // const currentRoute: string | null = window.location.pathname;
     history.pushState({}, "", url);
-    await this.activateRoute(null, currentRoute);
+    await this.activateRoute();
   }
 
-  async clickHandler(e) {
-    let element = null;
+  async clickHandler(e: MouseEvent): Promise<void> {
+    let element: HTMLAnchorElement | null = null;
+    if (!(e.target instanceof HTMLElement)) {
+      return;
+    }
 
-    if (e.target.nodeName === "A") {
-      element = e.target;
-    } else if (e.target.parentNode.nodeName === "A") {
-      element = e.target.parentNode;
+    const target = e.target;
+    const parent = target.parentElement;
+
+    if (target.nodeName === "A") {
+      element = target as HTMLAnchorElement;
+    } else if (parent && parent.nodeName === "A") {
+      element = parent as HTMLAnchorElement;
     }
 
     if (
-      e.target.id === "logout-icon" ||
-      (e.target.parentNode && e.target.parentNode.id === "logout-icon")
+      target.id === "logout-icon" ||
+      (parent && parent.id === "logout-icon")
     ) {
       return;
     }
 
     if (element) {
       e.preventDefault();
-      const currentRoute = window.location.pathname;
-      const url = element.href.replace(window.location.origin, "");
+      const currentRoute: string = window.location.pathname;
+      const url: string = element.href.replace(window.location.origin, "");
       if (
         !url ||
         currentRoute === url.replace("#", "") ||
@@ -178,42 +194,34 @@ export class Router {
     }
   }
 
-  async activateRoute(e, oldRoute = null) {
-    if (oldRoute) {
-      const currentRoute = this.routes.find((item) => item.route === oldRoute);
-      if (currentRoute.styles && currentRoute.styles.length > 0) {
-        currentRoute.styles.forEach((style) => {
-          document.querySelector(`link[href='/css/${style}']`).remove();
-        });
-      }
-
-      if (currentRoute.scripts && currentRoute.scripts.length > 0) {
-        currentRoute.scripts.forEach((script) => {
-          document.querySelector(`script[src='/js/${script}']`).remove();
-        });
-      }
-    }
+  private async activateRoute(): Promise<void> {
 
     const urlRoute = window.location.pathname;
     const newRoute = this.routes.find((item) => item.route === urlRoute);
     if (newRoute) {
-      if (newRoute.title) {
+      if (newRoute.title && this.titlePageElement) {
         this.titlePageElement.innerText =
           newRoute.title + " | Lumincoin Finance";
       }
 
       if (newRoute.filePathTemplates) {
-        let contentBlock = this.contentPageElement;
+        let contentBlock: HTMLElement | null = this.contentPageElement;
 
         if (newRoute.useLayout) {
-          this.contentPageElement.innerHTML = await fetch(
-            newRoute.useLayout,
-          ).then((response) => response.text());
-          contentBlock = document.getElementById("content-layout");
+          if (this.contentPageElement) {
+            this.contentPageElement.innerHTML = await fetch(
+              newRoute.useLayout,
+            ).then((response) => response.text());
+            contentBlock = document.getElementById("content-layout");
+          }
         }
-        contentBlock.innerHTML = await fetch(newRoute.filePathTemplates).then(
-          (response) => response.text(),
-        );
+
+        if (contentBlock) {
+          contentBlock.innerHTML = await fetch(newRoute.filePathTemplates).then(
+            (response) => response.text(),
+          );
+        }
+
         this.activateMenuItem(newRoute);
       }
       if (newRoute.load && typeof newRoute.load === "function") {
@@ -225,9 +233,13 @@ export class Router {
       await this.activateRoute();
     }
   }
-  activateMenuItem(route) {
+
+  private activateMenuItem(route: RouteType | undefined): void {
+    if (!route) return;
     document.querySelectorAll(".a-link").forEach((item) => {
-      const href = item.getAttribute("href");
+      const href: string | null = item.getAttribute("href");
+      if (!href) return;
+
       if (
         (route.route.includes(href) && href !== "/") ||
         (route.route === "/" && href === "/")
@@ -241,10 +253,14 @@ export class Router {
     });
     const categoryButton = document.querySelector(".select-button");
     const categoryLinks = document.querySelectorAll(".selecet-li-item");
-    const isCategoryActive = Array.from(categoryLinks).some((link) => {
-      return route.route.includes(link.getAttribute("href"));
-    });
-    if (isCategoryActive) {
+    const isCategoryActive = route
+      ? Array.from(categoryLinks).some((link) => {
+          const linkHref = link.getAttribute("href");
+          return linkHref ? route.route.includes(linkHref) : false;
+        })
+      : false;
+
+    if (isCategoryActive && categoryButton) {
       categoryButton.classList.add("active");
       categoryButton.classList.remove("text-primary-emphasis");
     } else if (categoryButton) {

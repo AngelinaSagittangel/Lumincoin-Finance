@@ -1,17 +1,31 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
-import { ModalLogout } from "../auth/modal-logout.js";
-import { UpdateBalance } from "../auth/update-balance.js";
-import { UserInfo } from "../auth/userInfo.js";
+import { AuthUtils } from "../../utils/auth-utils";
+import { HttpUtils } from "../../utils/http-utils";
+import { ModalLogout } from "../auth/modal-logout";
+import { UpdateBalance } from "../auth/update-balance";
+import { UserInfo } from "../auth/userInfo";
 
 export class AllFinanceCreate {
-  constructor(openNewRoute) {
+  private currentType: string | null;
+  readonly financeValueType: HTMLInputElement | null = null;
+  readonly expenseValueType: HTMLInputElement | null = null;
+  private typeInput: HTMLSelectElement | null = null;
+  private categoryInput: HTMLSelectElement | null = null;
+  private amountInput: HTMLInputElement | null = null;
+  private dateInput: HTMLInputElement | null = null;
+  private commentInput: HTMLInputElement | null = null;
+  private saveBtn: HTMLElement | null = null;
+
+  private openNewRoute: (path: string) => Promise<void>;
+
+  constructor(openNewRoute: (path: string) => Promise<void>) {
     this.currentType = null;
 
     this.openNewRoute = openNewRoute;
 
-    if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
-      return this.openNewRoute("/login");
+    const token = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+    if (!token) {
+      this.openNewRoute("/login");
+      return;
     }
     ModalLogout.init();
     UserInfo.balance(this.openNewRoute);
@@ -21,28 +35,39 @@ export class AllFinanceCreate {
     const urlParams = new URLSearchParams(window.location.search);
     this.currentType = urlParams.get("type");
     if (!this.currentType) {
-      return this.openNewRoute("/all-finance");
+      this.openNewRoute("/all-finance");
+      return;
     }
 
-    $(function () {
-      $("#datepicker").datepicker({
+    (window as any).$(function () {
+      (window as any).$("#datepicker").datepicker({
         language: "ru",
         format: "yyyy-mm-dd",
       });
     });
 
-    let valueInput = null;
-
-    this.financeValueType = document.getElementById("finance-value");
-    this.expenseValueType = document.getElementById("expense-value");
-
-    this.typeInput = document.getElementById("typeInput");
-    this.categoryInput = document.getElementById("categoryInput");
-    this.amountInput = document.getElementById("amountInput");
-    this.dateInput = document.getElementById("datepicker");
-    this.commentInput = document.getElementById("commentInput");
-
-    this.saveBtn = document.querySelector(".saveBtn");
+    this.financeValueType = document.getElementById(
+      "finance-value",
+    ) as HTMLInputElement | null;
+    this.expenseValueType = document.getElementById(
+      "expense-value",
+    ) as HTMLInputElement | null;
+    this.typeInput = document.getElementById(
+      "typeInput",
+    ) as HTMLSelectElement | null;
+    this.categoryInput = document.getElementById(
+      "categoryInput",
+    ) as HTMLSelectElement | null;
+    this.amountInput = document.getElementById(
+      "amountInput",
+    ) as HTMLInputElement | null;
+    this.dateInput = document.getElementById(
+      "datepicker",
+    ) as HTMLInputElement | null;
+    this.commentInput = document.getElementById(
+      "commentInput",
+    ) as HTMLInputElement | null;
+    this.saveBtn = document.querySelector(".saveBtn") as HTMLElement | null;
 
     if (this.saveBtn) {
       this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
@@ -64,7 +89,8 @@ export class AllFinanceCreate {
     }
   }
 
-  changeTypeInput() {
+  private changeTypeInput(): void {
+    if (!this.typeInput) return;
     const selecdType = this.typeInput.value;
 
     if (selecdType === "Доход") {
@@ -76,7 +102,8 @@ export class AllFinanceCreate {
     this.getCategory();
   }
 
-  async getCategory() {
+  private async getCategory(): Promise<void> {
+    if (!this.currentType) return;
     if (this.currentType === "income") {
       const result = await HttpUtils.request("/categories/income");
       if (result.redirect) {
@@ -106,17 +133,31 @@ export class AllFinanceCreate {
     }
   }
 
-  showCategory(result) {
+  private showCategory(result: any[]): void {
+    if (!this.categoryInput) {
+      return;
+    }
     this.categoryInput.innerHTML = "";
     result.forEach((elemnt) => {
       const option = document.createElement("option");
       option.value = elemnt.id;
       option.textContent = elemnt.title;
-      this.categoryInput.appendChild(option);
+      if (this.categoryInput) {
+        this.categoryInput.appendChild(option);
+      }
     });
   }
 
-  validateForm() {
+  private validateForm(): boolean {
+    if (
+      !this.typeInput ||
+      !this.categoryInput ||
+      !this.amountInput ||
+      !this.dateInput
+    ) {
+      return false;
+    }
+
     let isValid = true;
 
     if (this.typeInput.value) {
@@ -150,8 +191,19 @@ export class AllFinanceCreate {
     return isValid;
   }
 
-  async saveCategory(e) {
+  private async saveCategory(e: Event): Promise<void> {
     e.preventDefault();
+    if (!this.validateForm()) {
+      return;
+    }
+    if (
+      !this.amountInput ||
+      !this.dateInput ||
+      !this.commentInput ||
+      !this.categoryInput
+    ) {
+      return;
+    }
     if (this.validateForm()) {
       const result = await HttpUtils.request("/operations", "POST", true, {
         type: this.currentType,

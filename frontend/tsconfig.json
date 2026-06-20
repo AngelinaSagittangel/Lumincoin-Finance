@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // Основные настройки для современного вывода
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+
+    // Библиотеки, нужные для работы с DOM в браузере
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+
+    // Строгость (оставляем как было — это хорошо)
+    "strict": true,
+
+    // Полезные современные опции
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Вывод файлов
+    "outDir": "./dist",
+    "rootDir": ".",
+    "sourceMap": true,
+
+    // Если позже добавишь React — можно будет раскомментировать
+    // "jsx": "react-jsx",
+
+    // Опционально: если не хочешь генерировать .d.ts файлы
+    "declaration": false
+  },
+
+  "include": ["**/*.ts", "**/*.tsx"],
+
+  "exclude": ["node_modules", "dist"]
+}

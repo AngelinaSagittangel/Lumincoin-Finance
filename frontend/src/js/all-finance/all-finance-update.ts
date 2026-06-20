@@ -1,31 +1,61 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
-import { ModalLogout } from "../auth/modal-logout.js";
-import { UpdateBalance } from "../auth/update-balance.js";
-import { UserInfo } from "../auth/userInfo.js";
+import { AuthUtils } from "../../utils/auth-utils";
+import { HttpUtils } from "../../utils/http-utils";
+import { ModalLogout } from "../auth/modal-logout";
+import { UpdateBalance } from "../auth/update-balance";
+import { UserInfo } from "../auth/userInfo";
 
 export class AllFinanceUpdate {
-  constructor(openNewRoute) {
+  private openNewRoute: (path: string) => Promise<void>;
+
+  private id: string | null = null;
+  private typeInput: HTMLSelectElement | null = null;
+  private categoryInput: HTMLSelectElement | null = null;
+  private amountInput: HTMLInputElement | null = null;
+  private dateInput: HTMLInputElement | null = null;
+  private commentInput: HTMLInputElement | null = null;
+  private saveBtn: HTMLElement | null = null;
+
+  private currentType: string = "";
+
+  constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
 
-    if (!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
-      return this.openNewRoute("/login");
+    const token = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+    if (!token) {
+      this.openNewRoute("/login");
+      return;
     }
     const urlParams = new URLSearchParams(window.location.search);
     this.id = urlParams.get("id");
     if (!this.id) {
-      return this.openNewRoute("/finance");
+      this.openNewRoute("/finance");
+      return;
     }
-    this.typeInput = document.getElementById("typeInput");
-    this.categoryInput = document.getElementById("categoryInput");
-    this.amountInput = document.getElementById("amountInput");
-    this.dateInput = document.getElementById("datepicker");
-    this.commentInput = document.getElementById("commentInput");
-    this.currentType = "";
-    this.typeInput.addEventListener("change", this.getType.bind(this));
+    this.typeInput = document.getElementById(
+      "typeInput",
+    ) as HTMLSelectElement | null;
+    this.categoryInput = document.getElementById(
+      "categoryInput",
+    ) as HTMLSelectElement | null;
+    this.amountInput = document.getElementById(
+      "amountInput",
+    ) as HTMLInputElement | null;
+    this.dateInput = document.getElementById(
+      "datepicker",
+    ) as HTMLInputElement | null;
+    this.commentInput = document.getElementById(
+      "commentInput",
+    ) as HTMLInputElement | null;
 
-    this.saveBtn = document.querySelector(".saveBtn");
-    this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
+    if (this.typeInput) {
+      this.typeInput.addEventListener("change", this.getType.bind(this));
+    }
+
+    this.saveBtn = document.querySelector(".saveBtn") as HTMLElement | null;
+    if (this.saveBtn) {
+      this.saveBtn.addEventListener("click", this.saveCategory.bind(this));
+    }
+
     ModalLogout.init();
     UserInfo.balance(this.openNewRoute);
     UserInfo.userName();
@@ -33,7 +63,8 @@ export class AllFinanceUpdate {
     this.getInfo();
   }
 
-  getType() {
+  private getType(): void {
+    if (!this.typeInput) return;
     if (this.typeInput.value === "Доход") {
       this.currentType = "income";
     } else if (this.typeInput.value === "Расход") {
@@ -42,7 +73,7 @@ export class AllFinanceUpdate {
     this.getCategory();
   }
 
-  async getInfo() {
+  private async getInfo(): Promise<void> {
     const result = await HttpUtils.request("/operations/" + this.id);
     if (result.redirect) {
       return this.openNewRoute("/login");
@@ -58,7 +89,8 @@ export class AllFinanceUpdate {
     return result.response;
   }
 
-  async getCategory() {
+  private async getCategory(): Promise<void> {
+    if (!this.currentType || !this.typeInput) return;
     if (this.currentType === "income" || this.typeInput.value === "Доход") {
       const result = await HttpUtils.request("/categories/income");
       if (result.redirect) {
@@ -91,30 +123,60 @@ export class AllFinanceUpdate {
     }
   }
 
-  showCategory(result) {
+  private showCategory(result: any[]): void {
+    if (!this.categoryInput) return;
     this.categoryInput.innerHTML = "";
     result.forEach((elemnt) => {
       const option = document.createElement("option");
       option.value = elemnt.id;
       option.textContent = elemnt.title;
-      this.categoryInput.appendChild(option);
+      if (this.categoryInput) {
+        this.categoryInput.appendChild(option);
+      }
     });
   }
 
-  showInfoInput(result) {
-    if (result.type === "expense") {
-      this.typeInput.value = "Расход";
-    } else if (result.type === "income") {
-      this.typeInput.value = "Доход";
+  private showInfoInput(result: {
+    type: string;
+    amount: number;
+    date: string;
+    comment: string;
+    category?: any;
+  }): void {
+    if (this.typeInput) {
+      if (result.type === "expense") {
+        this.typeInput.value = "Расход";
+      } else if (result.type === "income") {
+        this.typeInput.value = "Доход";
+      }
     }
-    console.log(result.category);
-    this.amountInput.value = result.amount;
-    this.dateInput.value = result.date;
-    this.commentInput.value = result.comment;
-    this.getType();
+
+
+    if (this.amountInput) {
+      this.amountInput.value = String(result.amount);
+    }
+
+    if (this.dateInput) {
+      this.dateInput.value = result.date;
+    }
+
+    if (this.commentInput) {
+      this.commentInput.value = result.comment;
+    }
+
+    if (this.typeInput) {
+      this.getType();
+    }
   }
 
-  validateForm() {
+  private validateForm(): boolean {
+    if (
+      !this.typeInput ||
+      !this.categoryInput ||
+      !this.amountInput ||
+      !this.dateInput
+    )
+      return false;
     let isValid = true;
 
     if (this.typeInput.value) {
@@ -147,9 +209,24 @@ export class AllFinanceUpdate {
     return isValid;
   }
 
-  async saveCategory(e) {
+  private async saveCategory(e: Event): Promise<void> {
     e.preventDefault();
+    if (!this.validateForm()) {
+      return;
+    }
+
+    if (!this.id) {
+      return;
+    }
     if (this.validateForm()) {
+      if (
+        !this.currentType ||
+        !this.amountInput ||
+        !this.dateInput ||
+        !this.commentInput ||
+        !this.categoryInput
+      )
+        return;
       const result = await HttpUtils.request(
         "/operations/" + this.id,
         "PUT",

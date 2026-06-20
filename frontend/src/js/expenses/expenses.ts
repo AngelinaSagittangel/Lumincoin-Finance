@@ -1,11 +1,18 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
-import { ModalLogout } from "../auth/modal-logout.js";
-import { UpdateBalance } from "../auth/update-balance.js";
-import { UserInfo } from "../auth/userInfo.js";
+import { HttpUtils } from "../../utils/http-utils";
+import { ModalLogout } from "../auth/modal-logout";
+import { UpdateBalance } from "../auth/update-balance";
+import { UserInfo } from "../auth/userInfo";
+
+interface ExpenseCategory {
+  id: number;
+  title: string;
+}
 
 export class Expenses {
-  constructor(openNewRoute) {
+  private openNewRoute: (path: string) => Promise<void>;
+  private currentCategory: ExpenseCategory | null = null;
+
+  constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
     this.currentCategory = null;
 
@@ -16,7 +23,7 @@ export class Expenses {
     this.getExpenses();
   }
 
-  async getExpenses() {
+  private async getExpenses(): Promise<void> {
     const result = await HttpUtils.request("/categories/expense");
     if (result.redirect) {
       return this.openNewRoute("/login");
@@ -32,9 +39,15 @@ export class Expenses {
     this.initModalCloseHandlers();
   }
 
-  showExpenses(finance) {
-    const financeWrapper = document.querySelector(".finance-wrapper");
-    const addCard = document.querySelector(".card-add-wrapper");
+  private showExpenses(finance: ExpenseCategory[]): void {
+    const financeWrapper: HTMLElement | null =
+      document.querySelector(".finance-wrapper");
+    const addCard: HTMLElement | null =
+      document.querySelector(".card-add-wrapper");
+    if (!financeWrapper) {
+      return;
+    }
+    financeWrapper.innerHTML = "";
     finance.forEach((category) => {
       const cardWrapper = document.createElement("div");
       cardWrapper.classList.add("col-xl-4", "col-lg-6", "mb-4");
@@ -65,10 +78,7 @@ export class Expenses {
       cardWrapper.appendChild(card);
       financeWrapper.appendChild(cardWrapper);
 
-      if (addCard) {
-        financeWrapper.append(addCard);
-      }
-
+     
       cardUpdateBtn.addEventListener("click", (e) => {
         e.preventDefault();
         this.openNewRoute("/expenses-update?id=" + category.id);
@@ -79,32 +89,44 @@ export class Expenses {
         this.openModal(category);
       });
     });
+    if (addCard) {
+      financeWrapper.append(addCard);
+    }
   }
 
-  openModal(category) {
-    this.category = category;
-    const formModal = document.querySelector(".modal-finance");
-
+  private openModal(category: ExpenseCategory): void {
+    this.currentCategory = category;
+    const formModal: HTMLElement | null =
+      document.querySelector(".modal-finance");
+    if (!formModal) {
+      return;
+    }
     formModal.classList.add("show");
     formModal.style.display = "block";
   }
 
-  closeModal() {
-    const formModal = document.querySelector(".modal-finance");
+  private closeModal(): void {
+    const formModal: HTMLElement | null =
+      document.querySelector(".modal-finance");
     if (!formModal) return;
 
     formModal.classList.remove("show");
     formModal.style.display = "none";
   }
 
-  initModalCloseHandlers() {
+  private initModalCloseHandlers(): void {
     const footerButtons = document.querySelectorAll(".close-delete-modal");
     const footerButtonsSuccess = document.querySelectorAll(
       ".success-delete-button",
     );
+    const that = this;
     footerButtonsSuccess.forEach((button) => {
       button.addEventListener("click", () => {
-        this.deleteCategory(this.category);
+        if (that.currentCategory) {
+          that.deleteCategory(that.currentCategory);
+        } else {
+          that.closeModal();
+        }
       });
     });
     footerButtons.forEach((button) => {
@@ -114,10 +136,14 @@ export class Expenses {
     });
   }
 
-  async deleteCategory(category) {
-    const id = category.id;
+  private async deleteCategory(category: ExpenseCategory): Promise<void> {
+    if (!category.id) {
+      this.closeModal();
+      return;
+    }
+    
     const result = await HttpUtils.request(
-      "/categories/expense/" + id,
+      "/categories/expense/" + category.id,
       "DELETE",
     );
     if (result.redirect) {

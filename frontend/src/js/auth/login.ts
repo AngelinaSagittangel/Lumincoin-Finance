@@ -1,26 +1,46 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
+import { AuthUtils } from "../../utils/auth-utils";
+import { HttpUtils } from "../../utils/http-utils";
 
 export class Login {
-  constructor(openNewRoute) {
+  private inputEmail: HTMLInputElement | null;
+  private inputPassword: HTMLInputElement | null;
+  private rememberMe: HTMLInputElement | null;
+  private commonError: HTMLElement | null;
+  private openNewRoute: (path: string) => void;
+
+  constructor(openNewRoute: (path: string) => void) {
     this.openNewRoute = openNewRoute;
 
-    if (AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
-      return this.openNewRoute("/");
-    }
-
-    this.inputEmail = document.getElementById("input-email");
-    this.inputPassword = document.getElementById("input-password");
-    this.rememberMe = document.getElementById("rememberMe");
+    this.inputEmail = document.getElementById(
+      "input-email",
+    ) as HTMLInputElement | null;
+    this.inputPassword = document.getElementById(
+      "input-password",
+    ) as HTMLInputElement | null;
+    this.rememberMe = document.getElementById(
+      "rememberMe",
+    ) as HTMLInputElement | null;
     this.commonError = document.getElementById("common-error");
 
-    document
-      .getElementById("auth-button")
-      .addEventListener("click", this.login.bind(this));
+    const accessToken = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+
+    if (accessToken) {
+      this.openNewRoute("/");
+      return;
+    }
+
+    const authButton: HTMLElement | null =
+      document.getElementById("auth-button");
+    if (authButton) {
+      authButton.addEventListener("click", this.login.bind(this));
+    }
   }
 
-  validateForm() {
-    let isValid = true;
+  private validateForm(): boolean {
+    if (!this.inputEmail || !this.inputPassword) {
+      return false;
+    }
+    let isValid: boolean = true;
 
     if (
       this.inputEmail.value &&
@@ -49,9 +69,15 @@ export class Login {
     return isValid;
   }
 
-  async login() {
-    this.commonError.style.display = "none";
+  private async login(): Promise<void> {
+    if (this.commonError) {
+      this.commonError.style.display = "none";
+    }
+
     if (this.validateForm()) {
+      if (!this.inputEmail || !this.inputPassword || !this.rememberMe) {
+        return;
+      }
       const result = await HttpUtils.request("/login", "POST", false, {
         email: this.inputEmail.value,
         password: this.inputPassword.value,
@@ -68,7 +94,10 @@ export class Login {
             !result.response.user.lastName ||
             !result.response.user.id))
       ) {
-        this.commonError.style.display = "block";
+        if (this.commonError) {
+          this.commonError.style.display = "block";
+        }
+
         return;
       }
 

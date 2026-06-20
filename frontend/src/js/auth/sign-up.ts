@@ -1,28 +1,63 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
+import { AuthUtils } from "../../utils/auth-utils";
+import { HttpUtils } from "../../utils/http-utils";
 
 export class SignUp {
-  constructor(openNewRoute) {
+  private inputName: HTMLInputElement | null;
+  private inputLastName: HTMLInputElement | null;
+  private inputEmail: HTMLInputElement | null;
+  private inputPassword: HTMLInputElement | null;
+  private inputPasswordRepeat: HTMLInputElement | null;
+  private rememberMe: HTMLInputElement | null;
+  private commonError: HTMLElement | null;
+  private openNewRoute: (path: string) => void;
+
+  constructor(openNewRoute: (path: string) => void) {
     this.openNewRoute = openNewRoute;
-
-    if (AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
-      return this.openNewRoute("/");
-    }
-
-    this.inputName = document.getElementById("input-name");
-    this.inputLastName = document.getElementById("input-lastName");
-    this.inputEmail = document.getElementById("input-email");
-    this.inputPassword = document.getElementById("input-password");
-    this.inputPasswordRepeat = document.getElementById("input-password-repeat");
-    this.rememberMe = document.getElementById("rememberMe");
+    this.inputName = document.getElementById(
+      "input-name",
+    ) as HTMLInputElement | null;
+    this.inputLastName = document.getElementById(
+      "input-lastName",
+    ) as HTMLInputElement | null;
+    this.inputEmail = document.getElementById(
+      "input-email",
+    ) as HTMLInputElement | null;
+    this.inputPassword = document.getElementById(
+      "input-password",
+    ) as HTMLInputElement | null;
+    this.inputPasswordRepeat = document.getElementById(
+      "input-password-repeat",
+    ) as HTMLInputElement | null;
+    this.rememberMe = document.getElementById(
+      "rememberMe",
+    ) as HTMLInputElement | null;
     this.commonError = document.getElementById("common-error");
 
-    document
-      .getElementById("registr-button")
-      .addEventListener("click", this.signUp.bind(this));
+    const accessToken = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+
+    if (accessToken) {
+      this.openNewRoute("/");
+      return;
+    }
+
+    const registrButton: HTMLElement | null =
+      document.getElementById("registr-button");
+
+    if (registrButton) {
+      registrButton.addEventListener("click", this.signUp.bind(this));
+    }
   }
 
-  validateForm() {
+  private validateForm(): boolean {
+    if (
+      !this.inputName ||
+      !this.inputLastName ||
+      !this.inputEmail ||
+      !this.inputPassword ||
+      !this.inputPasswordRepeat
+    ) {
+      return false;
+    }
     let isValid = true;
 
     if (
@@ -82,9 +117,21 @@ export class SignUp {
     return isValid;
   }
 
-  async signUp() {
-    this.commonError.style.display = "none";
+  public async signUp(): Promise<void> {
+    if (this.commonError) {
+      this.commonError.style.display = "none";
+    }
+
     if (this.validateForm()) {
+      if (
+        !this.inputName ||
+        !this.inputLastName ||
+        !this.inputEmail ||
+        !this.inputPassword ||
+        !this.inputPasswordRepeat
+      ) {
+        return;
+      }
       const result = await HttpUtils.request("/signup", "POST", false, {
         name: this.inputName.value,
         lastName: this.inputLastName.value,
@@ -102,7 +149,10 @@ export class SignUp {
             !result.response.user.id ||
             !result.response.user.email))
       ) {
-        this.commonError.style.display = "block";
+        if (this.commonError) {
+          this.commonError.style.display = "block";
+        }
+
         return;
       }
 

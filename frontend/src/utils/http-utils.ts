@@ -1,14 +1,20 @@
 import config from "../config/config";
-import { AuthUtils } from "./auth-utils.js";
+import { AuthUtils } from "./auth-utils";
 
 export class HttpUtils {
-  static async request(url, method = "GET", useAuth = true, body = null) {
-    const result = {
-      error: false,
-      response: null,
-    };
+  public static async request(
+    url: string,
+    method: string = "GET",
+    useAuth: boolean = true,
+    body: any = null,
+  ): Promise<any> {
+    const result: { error: boolean; response: any | null; redirect?: string } =
+      {
+        error: false,
+        response: null,
+      };
 
-    const params = {
+    const params: any = {
       method: method,
       headers: {
         "Content-type": "application/json",
@@ -20,16 +26,16 @@ export class HttpUtils {
       params.body = JSON.stringify(body);
     }
 
-    let token = null;
+    let token: string | null = null;
 
     if (useAuth) {
-      token = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+      token = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey) as string | null;
       if (token) {
         params.headers["x-auth-token"] = token;
       }
     }
 
-    let response = null;
+    let response: Response;
     try {
       response = await fetch(config.api + url, params);
       result.response = await response.json();
@@ -44,7 +50,8 @@ export class HttpUtils {
         if (!token) {
           result.redirect = "/login";
         } else {
-          const updateTokenResult = await AuthUtils.updateRefreshToken();
+          const updateTokenResult: boolean =
+            await AuthUtils.updateRefreshToken();
           if (updateTokenResult) {
             return this.request(url, method, useAuth, body);
           } else {

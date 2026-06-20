@@ -1,11 +1,18 @@
-import { AuthUtils } from "../../utils/auth-utils.js";
-import { HttpUtils } from "../../utils/http-utils.js";
-import { ModalLogout } from "../auth/modal-logout.js";
-import { UpdateBalance } from "../auth/update-balance.js";
-import { UserInfo } from "../auth/userInfo.js";
+import { HttpUtils } from "../../utils/http-utils";
+import { ModalLogout } from "../auth/modal-logout";
+import { UpdateBalance } from "../auth/update-balance";
+import { UserInfo } from "../auth/userInfo";
+
+interface IncomeCategory {
+  id: number;
+  title: string;
+}
 
 export class Finance {
-  constructor(openNewRoute) {
+  private openNewRoute: (path: string) => Promise<void>;
+  private currentCategory: IncomeCategory | null = null;
+
+  constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
     this.currentCategory = null;
 
@@ -16,7 +23,7 @@ export class Finance {
     this.getFinance();
   }
 
-  async getFinance() {
+  private async getFinance(): Promise<void> {
     const result = await HttpUtils.request("/categories/income");
     if (result.redirect) {
       return this.openNewRoute("/login");
@@ -32,9 +39,14 @@ export class Finance {
     this.initModalCloseHandlers();
   }
 
-  showFinance(finance) {
-    const financeWrapper = document.querySelector(".finance-wrapper");
-    const addCard = document.querySelector(".card-add-wrapper");
+  private showFinance(finance: IncomeCategory[]): void {
+    const financeWrapper: HTMLElement | null =
+      document.querySelector(".finance-wrapper");
+    const addCard: HTMLElement | null =
+      document.querySelector(".card-add-wrapper");
+    if (!financeWrapper) {
+      return;
+    }
     finance.forEach((category) => {
       const cardWrapper = document.createElement("div");
       cardWrapper.classList.add("col-xl-4", "col-lg-6", "mb-4");
@@ -81,30 +93,41 @@ export class Finance {
     });
   }
 
-  openModal(category) {
-    this.category = category;
-    const formModal = document.querySelector(".modal-finance");
+  private openModal(category: IncomeCategory): void {
+    this.currentCategory = category;
+    const formModal: HTMLElement | null =
+      document.querySelector(".modal-finance");
+
+    if (!formModal) {
+      return;
+    }
 
     formModal.classList.add("show");
     formModal.style.display = "block";
   }
 
-  closeModal() {
-    const formModal = document.querySelector(".modal-finance");
+  private closeModal(): void {
+    const formModal: HTMLElement | null =
+      document.querySelector(".modal-finance");
     if (!formModal) return;
 
     formModal.classList.remove("show");
     formModal.style.display = "none";
   }
 
-  initModalCloseHandlers() {
+  private initModalCloseHandlers(): void {
     const footerButtons = document.querySelectorAll(".close-delete-modal");
     const footerButtonsSuccess = document.querySelectorAll(
       ".success-delete-button",
     );
+    const that = this;
     footerButtonsSuccess.forEach((button) => {
       button.addEventListener("click", () => {
-        this.deleteCategory(this.category);
+        if (that.currentCategory) {
+          that.deleteCategory(that.currentCategory);
+        } else {
+          that.closeModal();
+        }
       });
     });
     footerButtons.forEach((button) => {
@@ -114,10 +137,13 @@ export class Finance {
     });
   }
 
-  async deleteCategory(category) {
-    const id = category.id;
+  private async deleteCategory(category: IncomeCategory): Promise<void> {
+    if (!category.id) {
+      return;
+    }
+
     const result = await HttpUtils.request(
-      "/categories/income/" + id,
+      "/categories/income/" + category.id,
       "DELETE",
     );
     if (result.redirect) {
