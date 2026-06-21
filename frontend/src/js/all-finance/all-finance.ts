@@ -1,3 +1,4 @@
+import { AllFinanceType } from "../../types/all-finance.type";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
 import { UpdateBalance } from "../auth/update-balance";
@@ -6,7 +7,7 @@ import { UserInfo } from "../auth/userInfo";
 export class AllFinance {
   private btnCreateExpense: HTMLElement | null = null;
   private btnCreateFinance: HTMLElement | null = null;
-  
+
   private todayBtn: HTMLElement | null = null;
   private weekBtn: HTMLElement | null = null;
   private monthBtn: HTMLElement | null = null;
@@ -19,7 +20,7 @@ export class AllFinance {
   private spanDatepicker: HTMLElement | null = null;
   private spanDatepicker2: HTMLElement | null = null;
 
-  private date: any = null;
+  private date: AllFinanceType | null = null;
   private openNewRoute: (path: string) => Promise<void>;
   constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
@@ -137,8 +138,8 @@ export class AllFinance {
     }
   }
 
-  private openModal(date: any): void {
-    this.date = date;
+  private openModal(item: AllFinanceType): void {
+    this.date = item;
     const formModal: HTMLElement | null =
       document.querySelector(".modal-finance");
 
@@ -164,7 +165,9 @@ export class AllFinance {
     );
     footerButtonsSuccess.forEach((button) => {
       button.addEventListener("click", () => {
-        this.deleteCategory(this.date);
+        if (this.date) {
+          this.deleteCategory(this.date);
+        }
       });
     });
     footerButtons.forEach((button) => {
@@ -305,16 +308,7 @@ export class AllFinance {
     this.showCategoryTable(result.response);
   }
 
-  private showCategoryTable(
-    data: Array<{
-      id: number;
-      type: "income" | "expense";
-      category: string;
-      amount: number;
-      date: string;
-      comment?: string;
-    }>,
-  ): void {
+  private showCategoryTable(data: AllFinanceType[]): void {
     const tableWrapper = document.getElementById(
       "table-wrapper",
     ) as HTMLElement | null;
@@ -356,7 +350,7 @@ export class AllFinance {
 
       trElement.insertCell().innerText = `${item.amount}$`;
 
-      trElement.insertCell().innerText = this.formateDate(item.date);
+      trElement.insertCell().innerText = this.formatDate(item.date);
 
       trElement.insertCell().innerText = item.comment || "-";
 
@@ -397,7 +391,7 @@ export class AllFinance {
     });
   }
 
-  private formateDate(date: string | undefined): string {
+  private formatDate(date: string | undefined): string {
     if (!date) {
       return "-";
     }
@@ -405,7 +399,7 @@ export class AllFinance {
     return `${day}.${month}.${year}`;
   }
 
-  private async deleteCategory(item: { id: number }): Promise<void> {
+  private async deleteCategory(item: AllFinanceType): Promise<void> {
     const { id } = item;
     const result = await HttpUtils.request("/operations/" + id, "DELETE");
     if (result.redirect) {

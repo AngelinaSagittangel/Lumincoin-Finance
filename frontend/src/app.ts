@@ -9,7 +9,6 @@ import { Router } from "./router";
 
 class App {
   constructor() {
-    const $ = (window as any).$;
     new Router();
   }
 }

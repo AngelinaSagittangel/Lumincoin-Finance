@@ -1,3 +1,4 @@
+import { CategoryType } from "../../types/all-finance.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
@@ -123,13 +124,13 @@ export class AllFinanceUpdate {
     }
   }
 
-  private showCategory(result: any[]): void {
+  private showCategory(result: CategoryType[]): void {
     if (!this.categoryInput) return;
     this.categoryInput.innerHTML = "";
-    result.forEach((elemnt) => {
+    result.forEach((element) => {
       const option = document.createElement("option");
-      option.value = elemnt.id;
-      option.textContent = elemnt.title;
+      option.value = element.id.toString();
+      option.textContent = element.title;
       if (this.categoryInput) {
         this.categoryInput.appendChild(option);
       }
@@ -141,7 +142,7 @@ export class AllFinanceUpdate {
     amount: number;
     date: string;
     comment: string;
-    category?: any;
+    category?: string;
   }): void {
     if (this.typeInput) {
       if (result.type === "expense") {
