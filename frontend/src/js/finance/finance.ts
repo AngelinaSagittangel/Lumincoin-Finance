@@ -1,16 +1,14 @@
+import { CategoryType } from "../../types/all-finance.type";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
 import { UpdateBalance } from "../auth/update-balance";
 import { UserInfo } from "../auth/userInfo";
 
-interface IncomeCategory {
-  id: number;
-  title: string;
-}
+
 
 export class Finance {
   private openNewRoute: (path: string) => Promise<void>;
-  private currentCategory: IncomeCategory | null = null;
+  private currentCategory: CategoryType | null = null;
 
   constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
@@ -24,14 +22,14 @@ export class Finance {
   }
 
   private async getFinance(): Promise<void> {
-    const result = await HttpUtils.request("/categories/income");
+    const result = await HttpUtils.request<CategoryType[]>("/categories/income");
     if (result.redirect) {
       return this.openNewRoute("/login");
     }
     if (
       result.error ||
       !result.response ||
-      (result.response && result.response.error)
+      (result.response && result.response.length < 0)
     ) {
       return alert("Ошибка при запросе данных");
     }
@@ -39,7 +37,7 @@ export class Finance {
     this.initModalCloseHandlers();
   }
 
-  private showFinance(finance: IncomeCategory[]): void {
+  private showFinance(finance: CategoryType[]): void {
     const financeWrapper: HTMLElement | null =
       document.querySelector(".finance-wrapper");
     const addCard: HTMLElement | null =
@@ -93,7 +91,7 @@ export class Finance {
     });
   }
 
-  private openModal(category: IncomeCategory): void {
+  private openModal(category: CategoryType): void {
     this.currentCategory = category;
     const formModal: HTMLElement | null =
       document.querySelector(".modal-finance");
@@ -137,12 +135,12 @@ export class Finance {
     });
   }
 
-  private async deleteCategory(category: IncomeCategory): Promise<void> {
+  private async deleteCategory(category: CategoryType): Promise<void> {
     if (!category.id) {
       return;
     }
 
-    const result = await HttpUtils.request(
+    const result = await HttpUtils.request<CategoryType[]>(
       "/categories/income/" + category.id,
       "DELETE",
     );
@@ -152,7 +150,7 @@ export class Finance {
     if (
       result.error ||
       !result.response ||
-      (result.response && result.response.error)
+      (result.response && result.response.length === 0)
     ) {
       return alert(
         "Такое название уже используется, либо ошибка при запросе данных",

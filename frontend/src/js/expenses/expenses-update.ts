@@ -1,3 +1,4 @@
+import { CategoryType } from "../../types/all-finance.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
@@ -47,14 +48,13 @@ export class ExpensesUpdate {
       this.openNewRoute("/expenses");
       return;
     }
-    const result = await HttpUtils.request("/categories/expense/" + this.id);
+    const result = await HttpUtils.request<CategoryType>("/categories/expense/" + this.id);
     if (result.redirect) {
       return this.openNewRoute("/login");
     }
     if (
       result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      !result.response
     ) {
       return alert("Ошибка при запросе данных");
     }
@@ -83,7 +83,7 @@ export class ExpensesUpdate {
     }
     if (!this.updateCategoryInput) return;
     if (this.validateForm()) {
-      const result = await HttpUtils.request(
+      const result = await HttpUtils.request<CategoryType>(
         "/categories/expense/" + this.id,
         "PUT",
         true,
@@ -96,8 +96,7 @@ export class ExpensesUpdate {
       }
       if (
         result.error ||
-        !result.response ||
-        (result.response && result.response.error)
+        !result.response
       ) {
         return alert("Ошибка при запросе данных");
       }

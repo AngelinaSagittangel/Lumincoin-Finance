@@ -1,16 +1,14 @@
+import { CategoryType } from "../../types/all-finance.type";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
 import { UpdateBalance } from "../auth/update-balance";
 import { UserInfo } from "../auth/userInfo";
 
-interface ExpenseCategory {
-  id: number;
-  title: string;
-}
+
 
 export class Expenses {
   private openNewRoute: (path: string) => Promise<void>;
-  private currentCategory: ExpenseCategory | null = null;
+  private currentCategory: CategoryType | null = null;
 
   constructor(openNewRoute: (path: string) => Promise<void>) {
     this.openNewRoute = openNewRoute;
@@ -24,14 +22,14 @@ export class Expenses {
   }
 
   private async getExpenses(): Promise<void> {
-    const result = await HttpUtils.request("/categories/expense");
+    const result = await HttpUtils.request<CategoryType[]>("/categories/expense");
     if (result.redirect) {
       return this.openNewRoute("/login");
     }
     if (
       result.error ||
       !result.response ||
-      (result.response && result.response.error)
+      (result.response && result.response.length < 0)
     ) {
       return alert("Ошибка при запросе данных");
     }
@@ -39,7 +37,7 @@ export class Expenses {
     this.initModalCloseHandlers();
   }
 
-  private showExpenses(finance: ExpenseCategory[]): void {
+  private showExpenses(finance: CategoryType[]): void {
     const financeWrapper: HTMLElement | null =
       document.querySelector(".finance-wrapper");
     const addCard: HTMLElement | null =
@@ -94,7 +92,7 @@ export class Expenses {
     }
   }
 
-  private openModal(category: ExpenseCategory): void {
+  private openModal(category: CategoryType): void {
     this.currentCategory = category;
     const formModal: HTMLElement | null =
       document.querySelector(".modal-finance");
@@ -136,13 +134,13 @@ export class Expenses {
     });
   }
 
-  private async deleteCategory(category: ExpenseCategory): Promise<void> {
+  private async deleteCategory(category: CategoryType): Promise<void> {
     if (!category.id) {
       this.closeModal();
       return;
     }
     
-    const result = await HttpUtils.request(
+    const result = await HttpUtils.request<CategoryType>(
       "/categories/expense/" + category.id,
       "DELETE",
     );
@@ -151,8 +149,7 @@ export class Expenses {
     }
     if (
       result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      !result.response
     ) {
       return alert(
         "Такое название уже используется, либо ошибка при запросе данных",

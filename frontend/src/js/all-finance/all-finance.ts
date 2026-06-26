@@ -289,7 +289,7 @@ export class AllFinance {
     data: "today" | "week" | "month" | "year" | "all" | "interval",
   ): Promise<void> {
     const periodDate = this.showDate(data);
-    const result = await HttpUtils.request(
+    const result = await HttpUtils.request<AllFinanceType[]>(
       "/operations?period=interval&dateFrom=" +
         periodDate.dateFrom +
         "&dateTo=" +
@@ -300,8 +300,8 @@ export class AllFinance {
     }
     if (
       result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      !result.response 
+      || (result.response && result.response.length < 0)
     ) {
       return alert("Ошибка при запросе данных");
     }
@@ -406,12 +406,10 @@ export class AllFinance {
       return this.openNewRoute("/login");
     }
     if (
-      result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      result.error 
     ) {
       return alert(
-        "Такое название уже используется, либо ошибка при запросе данных",
+        "Не удалось удалить объект, проверьте данные или обратитесь в поддержку",
       );
     }
     return this.openNewRoute("/allfinance");

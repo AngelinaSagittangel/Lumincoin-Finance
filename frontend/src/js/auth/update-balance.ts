@@ -1,4 +1,9 @@
+import { BalanceResponseType } from "../../types/balace-response.type";
 import { HttpUtils } from "../../utils/http-utils";
+
+interface getBalance {
+  balance: number;
+}
 
 export class UpdateBalance {
   private static balanceUser: HTMLButtonElement | null = null;
@@ -81,17 +86,20 @@ export class UpdateBalance {
       return;
     }
 
-    const result = await HttpUtils.request("/balance", "PUT", true, {
-      newBalance: textNewBalance.value,
-    });
-    console.log(result);
+    const result = await HttpUtils.request<getBalance>(
+      "/balance",
+      "PUT",
+      true,
+      {
+        newBalance: textNewBalance.value,
+      },
+    );
     if (result.redirect) {
       return;
     }
     if (
       result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      !result.response.balance
     ) {
       return alert("Ошибка при редактировании баланса");
     }

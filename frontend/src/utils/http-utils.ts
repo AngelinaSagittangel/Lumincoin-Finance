@@ -1,18 +1,18 @@
 import config from "../config/config";
+import { HttpResponse } from "../types/http-response.type";
 import { AuthUtils } from "./auth-utils";
 
 export class HttpUtils {
-  public static async request(
+  public static async request<T>(
     url: string,
     method: string = "GET",
     useAuth: boolean = true,
     body: any = null,
-  ): Promise<any> {
-    const result: { error: boolean; response: any | null; redirect?: string } =
-      {
-        error: false,
-        response: null,
-      };
+  ): Promise<HttpResponse<T>> {
+    const result: HttpResponse<T> | null = {
+      error: false,
+      response: null,
+    } as HttpResponse<T>;
 
     const params: any = {
       method: method,
@@ -38,10 +38,11 @@ export class HttpUtils {
     let response: Response;
     try {
       response = await fetch(config.api + url, params);
-      result.response = await response.json();
+      result.response = (await response.json()) as T;
     } catch (e) {
+      console.error(e);
       result.error = true;
-      return;
+      return result;
     }
 
     if (response.status < 200 || response.status >= 300) {
@@ -53,7 +54,7 @@ export class HttpUtils {
           const updateTokenResult: boolean =
             await AuthUtils.updateRefreshToken();
           if (updateTokenResult) {
-            return this.request(url, method, useAuth, body);
+            return this.request<T>(url, method, useAuth, body);
           } else {
             result.redirect = "/login";
           }

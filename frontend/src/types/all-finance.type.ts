@@ -7,6 +7,8 @@ export type AllFinanceType = {
   comment?: string;
 };
 
+
+
 export type CategoryType = {
   id: number;
   title: string;

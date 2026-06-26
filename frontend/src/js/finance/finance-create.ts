@@ -1,3 +1,4 @@
+import { CategoryType } from "../../types/all-finance.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
@@ -56,7 +57,7 @@ export class FinanceCreate {
     }
     if (!this.createCategoryInput) return;
     if (this.validateForm()) {
-      const result = await HttpUtils.request(
+      const result = await HttpUtils.request<CategoryType[]>(
         "/categories/income",
         "POST",
         true,
@@ -70,7 +71,7 @@ export class FinanceCreate {
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
         return alert(
           "Такое название уже используется, либо ошибка при запросе данных",

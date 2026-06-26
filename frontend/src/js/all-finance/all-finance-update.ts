@@ -1,4 +1,4 @@
-import { CategoryType } from "../../types/all-finance.type";
+import { AllFinanceType, CategoryType } from "../../types/all-finance.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
@@ -75,32 +75,33 @@ export class AllFinanceUpdate {
   }
 
   private async getInfo(): Promise<void> {
-    const result = await HttpUtils.request("/operations/" + this.id);
+    const result = await HttpUtils.request<AllFinanceType>(
+      "/operations/" + this.id,
+    );
     if (result.redirect) {
       return this.openNewRoute("/login");
     }
     if (
       result.error ||
-      !result.response ||
-      (result.response && result.response.error)
+      !result.response 
     ) {
       return alert("Ошибка при запросе данных");
     }
     this.showInfoInput(result.response);
-    return result.response;
   }
 
   private async getCategory(): Promise<void> {
     if (!this.currentType || !this.typeInput) return;
     if (this.currentType === "income" || this.typeInput.value === "Доход") {
-      const result = await HttpUtils.request("/categories/income");
+      const result =
+        await HttpUtils.request<CategoryType[]>("/categories/income");
       if (result.redirect) {
         return this.openNewRoute("/login");
       }
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
         return alert("Ошибка при запросе данных");
       }
@@ -109,14 +110,16 @@ export class AllFinanceUpdate {
       this.currentType === "expense" ||
       this.typeInput.value === "Расход"
     ) {
-      const result = await HttpUtils.request("/categories/expense");
+      const result = await HttpUtils.request<CategoryType[]>(
+        "/categories/expense",
+      );
       if (result.redirect) {
         return this.openNewRoute("/login");
       }
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
         return alert("Ошибка при запросе данных");
       }
@@ -137,13 +140,7 @@ export class AllFinanceUpdate {
     });
   }
 
-  private showInfoInput(result: {
-    type: string;
-    amount: number;
-    date: string;
-    comment: string;
-    category?: string;
-  }): void {
+  private showInfoInput(result: AllFinanceType): void {
     if (this.typeInput) {
       if (result.type === "expense") {
         this.typeInput.value = "Расход";
@@ -151,7 +148,6 @@ export class AllFinanceUpdate {
         this.typeInput.value = "Доход";
       }
     }
-
 
     if (this.amountInput) {
       this.amountInput.value = String(result.amount);
@@ -161,7 +157,7 @@ export class AllFinanceUpdate {
       this.dateInput.value = result.date;
     }
 
-    if (this.commentInput) {
+    if (this.commentInput && result.comment) {
       this.commentInput.value = result.comment;
     }
 
@@ -228,7 +224,7 @@ export class AllFinanceUpdate {
         !this.categoryInput
       )
         return;
-      const result = await HttpUtils.request(
+      const result = await HttpUtils.request<AllFinanceType[]>(
         "/operations/" + this.id,
         "PUT",
         true,
@@ -246,7 +242,7 @@ export class AllFinanceUpdate {
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
         return alert(
           "Такое название уже используется, либо ошибка при запросе данных",

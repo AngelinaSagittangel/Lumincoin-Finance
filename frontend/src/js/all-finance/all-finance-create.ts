@@ -1,4 +1,4 @@
-import { CategoryType } from "../../types/all-finance.type";
+import { AllFinanceType, CategoryType } from "../../types/all-finance.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 import { ModalLogout } from "../auth/modal-logout";
@@ -109,29 +109,32 @@ export class AllFinanceCreate {
   private async getCategory(): Promise<void> {
     if (!this.currentType) return;
     if (this.currentType === "income") {
-      const result = await HttpUtils.request("/categories/income");
+      const result =
+        await HttpUtils.request<CategoryType[]>("/categories/income");
       if (result.redirect) {
         return this.openNewRoute("/login");
       }
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
-        return alert("Ошибка при запросе данных");
+        return console.log("Ошибка при запросе данных");
       }
       this.showCategory(result.response);
     } else if (this.currentType === "expense") {
-      const result = await HttpUtils.request("/categories/expense");
+      const result = await HttpUtils.request<CategoryType[]>(
+        "/categories/expense",
+      );
       if (result.redirect) {
         return this.openNewRoute("/login");
       }
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
-        return alert("Ошибка при запросе данных");
+        return console.log("Ошибка при запросе данных");
       }
       this.showCategory(result.response);
     }
@@ -209,20 +212,25 @@ export class AllFinanceCreate {
       return;
     }
     if (this.validateForm()) {
-      const result = await HttpUtils.request("/operations", "POST", true, {
-        type: this.currentType,
-        amount: parseInt(this.amountInput.value),
-        date: this.dateInput.value,
-        comment: this.commentInput.value,
-        category_id: parseInt(this.categoryInput.value, 10),
-      });
+      const result = await HttpUtils.request<AllFinanceType[]>(
+        "/operations",
+        "POST",
+        true,
+        {
+          type: this.currentType,
+          amount: parseInt(this.amountInput.value),
+          date: this.dateInput.value,
+          comment: this.commentInput.value,
+          category_id: parseInt(this.categoryInput.value, 10),
+        },
+      );
       if (result.redirect) {
         return this.openNewRoute("/login");
       }
       if (
         result.error ||
         !result.response ||
-        (result.response && result.response.error)
+        (result.response && result.response.length === 0)
       ) {
         return alert(
           "Такое название уже используется, либо ошибка при запросе данных",

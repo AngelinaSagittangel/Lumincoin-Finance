@@ -1,3 +1,4 @@
+import { LoginResponseType } from "../../types/login-response.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 
@@ -78,7 +79,7 @@ export class Login {
       if (!this.inputEmail || !this.inputPassword || !this.rememberMe) {
         return;
       }
-      const result = await HttpUtils.request("/login", "POST", false, {
+      const result = await HttpUtils.request<LoginResponseType>("/login", "POST", false, {
         email: this.inputEmail.value,
         password: this.inputPassword.value,
         rememberMe: this.rememberMe.checked,

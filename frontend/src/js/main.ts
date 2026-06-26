@@ -4,6 +4,7 @@ import { ModalLogout } from "./auth/modal-logout";
 import { HttpUtils } from "../utils/http-utils";
 import { UserInfo } from "./auth/userInfo";
 import { UpdateBalance } from "./auth/update-balance";
+import { AllFinanceType } from "../types/all-finance.type";
 
 interface Operation {
   type: "income" | "expense";
@@ -48,7 +49,6 @@ export class Main {
 
     if (hasIncomeChart || hasExpenseChart) {
       this.showCategoryDate("today");
-    } else {
     }
 
     this.todayBtn = document.getElementById("todayBtn") as HTMLElement | null;
@@ -231,21 +231,23 @@ export class Main {
 
   private async showCategoryDate(data: string): Promise<void> {
     const periodDate = this.showDate(data);
-    const result = await HttpUtils.request(
+
+    const result = await HttpUtils.request<AllFinanceType[]>(
       "/operations?period=interval&dateFrom=" +
         periodDate.dateFrom +
         "&dateTo=" +
         periodDate.dateTo,
     );
+
     if (result.redirect) {
       return this.openNewRoute("/login");
     }
     if (
       result.error ||
       !result.response ||
-      (result.response && result.response.error)
+      (result.response && result.response.length < 0)
     ) {
-      return alert("Ошибка при запросе данных");
+      return console.error(result.error);
     }
 
     this.showIncomeChart(result.response);

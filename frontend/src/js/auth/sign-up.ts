@@ -1,3 +1,5 @@
+import { SignupResponseType } from "../../types/signup-response.type";
+import { UserInfoType } from "../../types/user-info.type";
 import { AuthUtils } from "../../utils/auth-utils";
 import { HttpUtils } from "../../utils/http-utils";
 
@@ -132,13 +134,18 @@ export class SignUp {
       ) {
         return;
       }
-      const result = await HttpUtils.request("/signup", "POST", false, {
-        name: this.inputName.value,
-        lastName: this.inputLastName.value,
-        email: this.inputEmail.value,
-        password: this.inputPassword.value,
-        passwordRepeat: this.inputPasswordRepeat.value,
-      });
+      const result = await HttpUtils.request<SignupResponseType>(
+        "/signup",
+        "POST",
+        false,
+        {
+          name: this.inputName.value,
+          lastName: this.inputLastName.value,
+          email: this.inputEmail.value,
+          password: this.inputPassword.value,
+          passwordRepeat: this.inputPasswordRepeat.value,
+        },
+      );
 
       if (
         result.error ||
@@ -157,10 +164,10 @@ export class SignUp {
       }
 
       AuthUtils.setUserInfo({
-        name: result.response.user.name,
-        lastName: result.response.user.lastName,
         id: result.response.user.id,
         email: result.response.user.email,
+        name: result.response.user.name,
+        lastName: result.response.user.lastName,
       });
 
       this.openNewRoute("/");
